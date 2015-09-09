@@ -42,7 +42,7 @@ bool is_menu_showing()
 void draw_menu_line(std::string caption, float lineWidth, float lineHeight, float lineTop, float lineLeft, float textLeft, bool active, bool title, bool rescaleText)
 {
 	// default values
-	int text_col[4] = { 255, 255, 255, 255.0f },
+	int text_col[4] = { 230, 230, 246, 255.0f }, //{ 255, 255, 255, 255.0f }
 		rect_col[4] = { 255, 255, 255, 80.f };
 	float text_scale = 0.35;
 	int font = 0;
@@ -52,13 +52,14 @@ void draw_menu_line(std::string caption, float lineWidth, float lineHeight, floa
 	// correcting values for active line
 	if (active)
 	{
-		text_col[0] = 0;
-		text_col[1] = 0;
-		text_col[2] = 0;
+		text_col[0] = 248; //0
+		text_col[1] = 247; //0
+		text_col[2] = 249; //0
 
-		rect_col[0] = 255;
-		rect_col[1] = 180;
-		rect_col[2] = 0;
+		//orange outline
+		rect_col[0] = 139;  //255
+		rect_col[1] = 43;   //180
+		rect_col[2] = 165;  //0
 		rect_col[3] = 200.0f;
 
 		//outline = true;

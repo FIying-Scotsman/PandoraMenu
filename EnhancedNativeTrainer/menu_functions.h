@@ -16,6 +16,7 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 
 #include "inc\main.h"
 
+#include "script.h"
 #include "io.h"
 #include "airbrake.h"
 
@@ -178,7 +179,7 @@ bool is_menu_showing();
 */
 void draw_rect(float A_0, float A_1, float A_2, float A_3, int A_4, int A_5, int A_6, int A_7);
 
-inline void draw_menu_header_line(std::string caption, float lineWidth, float lineHeight, float lineTop, float lineLeft, float textLeft, bool active, bool rescaleText = true)
+inline void draw_menu_header_line(std::string caption, float lineWidth, float lineHeight, float lineTop, float lineLeft, float textLeft, bool active, bool rescaleText = true, int curPage=1, int pageCount=1)
 {
 	// default values
 	int text_col[4] = { 255, 255, 255, 255.0f },
@@ -224,12 +225,50 @@ inline void draw_menu_header_line(std::string caption, float lineWidth, float li
 	UI::_SET_TEXT_ENTRY("STRING");
 	UI::_ADD_TEXT_COMPONENT_STRING((LPSTR)caption.c_str());
 
-	UI::_DRAW_TEXT(textLeftScaled, lineTopScaled + (0.5f * (lineHeightScaled - textHeightScaled)));
+	float textY = lineTopScaled + (0.5f * (lineHeightScaled - textHeightScaled));
+	float leftMarginScaled = textLeftScaled - lineLeftScaled;
+
+	UI::_DRAW_TEXT(textLeftScaled, textY);
 
 	// rect
 	draw_rect(lineLeftScaled, lineTopScaled,
 		lineWidthScaled, lineHeightScaled,
 		rect_col[0], rect_col[1], rect_col[2], rect_col[3]);
+
+	// draw page count in different colour
+	if (pageCount > 1)
+	{
+		std::ostringstream ss;
+		ss << " " << curPage << " of " << pageCount;
+
+		text_col[0] = 255;
+		text_col[1] = 180;
+		text_col[2] = 0;
+
+		UI::SET_TEXT_FONT(font);
+		UI::SET_TEXT_SCALE(0.0, text_scale);
+		UI::SET_TEXT_COLOUR(text_col[0], text_col[1], text_col[2], text_col[3]);
+		UI::SET_TEXT_RIGHT_JUSTIFY(1);
+
+		if (outline)
+		{
+			UI::SET_TEXT_OUTLINE();
+		}
+
+		if (dropShadow)
+		{
+			UI::SET_TEXT_DROPSHADOW(5, 0, 78, 255, 255);
+		}
+
+
+		UI::SET_TEXT_EDGE(0, 0, 0, 0, 0);
+		UI::SET_TEXT_WRAP(0.0f, lineLeftScaled + lineWidthScaled - leftMarginScaled);
+		UI::_SET_TEXT_ENTRY("STRING");
+
+		auto ssStr = ss.str();
+		UI::_ADD_TEXT_COMPONENT_STRING((char *)ssStr.c_str());
+		UI::_DRAW_TEXT(0, textY);
+	}
 }
 
 template<typename T>
@@ -246,13 +285,14 @@ void draw_menu_item_line(MenuItem<T> *item, float lineWidth, float lineHeight, f
 	// correcting values for active line
 	if (active)
 	{
-		text_col[0] = 0;
-		text_col[1] = 0;
-		text_col[2] = 0;
+		text_col[0] = 248; //0
+		text_col[1] = 247; //0
+		text_col[2] = 249; //0
 
-		rect_col[0] = 255;
-		rect_col[1] = 180;
-		rect_col[2] = 0;
+		//orange outline
+		rect_col[0] = 139;  //255
+		rect_col[1] = 43;   //180
+		rect_col[2] = 165;  //0
 		rect_col[3] = 200.0f;
 
 		//outline = true;
@@ -367,8 +407,8 @@ void draw_menu_item_line(MenuItem<T> *item, float lineWidth, float lineHeight, f
 		std::stringstream ss;
 		ss.imbue(std::locale(""));
 		ss << std::string("$") << std::fixed << cashItem->GetCash();
-
-		UI::_ADD_TEXT_COMPONENT_STRING((char *)ss.str().c_str());
+		auto ssStr = ss.str();
+		UI::_ADD_TEXT_COMPONENT_STRING((char *)ssStr.c_str());
 		UI::_DRAW_TEXT(0, textY);
 	}
 	else if (WantedSymbolItem<T>* wantedItem = dynamic_cast<WantedSymbolItem<T>*>(item))
@@ -403,7 +443,8 @@ void draw_menu_item_line(MenuItem<T> *item, float lineWidth, float lineHeight, f
 		UI::SET_TEXT_WRAP(0, lineLeftScaled + lineWidthScaled - rightMarginScaled - (starWidth*(5-i)));
 		UI::_SET_TEXT_ENTRY("STRING");
 
-		UI::_ADD_TEXT_COMPONENT_STRING((char *) wantedStars.str().c_str());
+		auto wantedStarsStr = wantedStars.str();
+		UI::_ADD_TEXT_COMPONENT_STRING((char *)wantedStarsStr.c_str());
 		UI::_DRAW_TEXT(0, textY);
 
 		text_col[0] = 100;
@@ -428,7 +469,8 @@ void draw_menu_item_line(MenuItem<T> *item, float lineWidth, float lineHeight, f
 		UI::SET_TEXT_WRAP(0, lineLeftScaled + lineWidthScaled - rightMarginScaled);
 		UI::_SET_TEXT_ENTRY("STRING");
 
-		UI::_ADD_TEXT_COMPONENT_STRING((char *)unwantedStars.str().c_str());
+		auto unwantedStarsStr = unwantedStars.str();
+		UI::_ADD_TEXT_COMPONENT_STRING((char *)unwantedStarsStr.c_str());
 
 		UI::_DRAW_TEXT(0, textY);
 	}
@@ -581,21 +623,17 @@ bool draw_generic_menu(std::vector<MenuItem<T>*> items, int *menuSelectionPtr, s
 		DWORD maxTickCount = GetTickCount() + waitTime;
 		do
 		{
-			// draw menu
-			std::ostringstream ss;
-			ss << headerText;
-			if (lineCount > 1)
-			{
-				ss << " " << (currentLine + 1) << " of " << lineCount;
-			}
-
-			draw_menu_header_line(ss.str(),
+			draw_menu_header_line(headerText,
 				350.0f,//line W
 				50.0f,//line H
 				15.0f,//line T
 				0.0f,//line L
 				15.0f,//text X offset
-				false );
+				false,
+				true,
+				(currentLine + 1),
+				lineCount
+				);
 
 			for (int i = 0; i < itemsOnThisLine; i++)
 			{

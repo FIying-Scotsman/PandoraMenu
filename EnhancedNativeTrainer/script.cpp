@@ -22,14 +22,18 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 #include "menu_functions.h"
 #include "skins.h"
 #include "script.h"
+#include "database.h"
+#include "debuglog.h"
 #include "vehicles.h"
 #include "teleportation.h"
 #include "airbrake.h"
-#include "Weapons.h"
+#include "weapons.h"
 
 #include <string>
 #include <sstream> 
-#include <fstream> 
+#include <fstream>
+#include <mutex>
+#include <thread>
 
 #include <ctime>
 #include <cctype>
@@ -41,7 +45,11 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 
 #pragma warning(disable : 4244 4305) // double <-> float conversions
 
-const bool DEBUG_LOG_ENABLED = false;
+int game_frame_num = 0;
+
+bool everInitialised = false;
+
+//std::mutex db_mutex;
 
 // features
 bool featurePlayerInvincible			=	false;
@@ -74,6 +82,8 @@ bool featureWorldGarbageTrucks			=	true;
 bool featureTimePaused					=	false;
 bool featureTimePausedUpdated			=	false;
 bool featureTimeSynced					=	false;
+bool featureTimeSlow = false;
+bool featureTimeSlowUpdated = false;
 
 bool featureWeatherWind					=	false;
 bool featureWeatherFreeze				=	false;
@@ -85,6 +95,8 @@ bool featureMiscHideHud					=	false;
 
 bool featureWantedLevelFrozen			=	false;
 int  frozenWantedLevel					=	0;
+
+bool featurePlayerResetOnDeath = true;
 
 // player model control, switching on normal ped model when needed	
 
@@ -113,7 +125,7 @@ void check_player_model()
 
 	if (!ENTITY::DOES_ENTITY_EXIST(playerPed)) return;
 
-	if (ENTITY::IS_ENTITY_DEAD(playerPed))
+	if (ENTITY::IS_ENTITY_DEAD(playerPed) && featurePlayerResetOnDeath)
 	{
 		bool found = false;
 		Hash model = ENTITY::GET_ENTITY_MODEL(playerPed);
@@ -130,15 +142,7 @@ void check_player_model()
 		if (!found)
 		{
 			set_status_text("Resetting player model");
-			model = GAMEPLAY::GET_HASH_KEY("player_zero");
-			STREAMING::REQUEST_MODEL(model);
-			while (!STREAMING::HAS_MODEL_LOADED(model))
-			{
-				WAIT(0);
-			}
-			PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), model);
-			PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
-			STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
+			applyChosenSkin("player_zero");
 		}
 
 		// wait until player is ressurected
@@ -152,14 +156,27 @@ void check_player_model()
 // Updates all features that can be turned off by the game, being called each game frame
 void update_features()
 {
+	everInitialised = true;
+	game_frame_num++;
+	if (game_frame_num >= 100000)
+	{
+		game_frame_num = 0;
+	}
+
+	if (game_frame_num % 1000 == 0)
+	{
+		DWORD myThreadID;
+		HANDLE myHandle = CreateThread(0, 0, save_settings_thread, 0, 0, &myThreadID);
+		CloseHandle(myHandle);
+	}
+
+	PED::SET_CREATE_RANDOM_COPS(featureWorldRandomCops);
+
 	update_status_text();
 
 	update_vehicle_guns();
 
 	check_player_model();
-
-	// read default feature values from the game
-	featureWorldRandomCops = PED::CAN_CREATE_RANDOM_COPS() == TRUE;
 
 	// common variables
 	Player player = PLAYER::PLAYER_ID();
@@ -223,20 +240,26 @@ void update_features()
 		featurePlayerIgnoredByPoliceUpdated = false;
 	}
 
-	// police ignore player
+	// everyone ignores player
 	if (featurePlayerIgnoredByAll)
 	{
 		if (bPlayerExists)
 		{
+			PLAYER::SET_POLICE_IGNORE_PLAYER(player, true);
 			PLAYER::SET_EVERYONE_IGNORE_PLAYER(player, true);
 			PLAYER::SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(player, false);
 			PLAYER::SET_IGNORE_LOW_PRIORITY_SHOCKING_EVENTS(player, true);
+			if (game_frame_num % 5 == 0)
+			{
+				set_all_nearby_peds_to_calm(playerPed, 50);
+			}
 		}
 	}
 	else if (featurePlayerIgnoredByAllUpdated)
 	{
 		if (bPlayerExists)
 		{
+			PLAYER::SET_POLICE_IGNORE_PLAYER(player, featurePlayerIgnoredByPolice);
 			PLAYER::SET_EVERYONE_IGNORE_PLAYER(player, false);
 			PLAYER::SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(player, true);
 			PLAYER::SET_IGNORE_LOW_PRIORITY_SHOCKING_EVENTS(player, false);
@@ -307,7 +330,7 @@ void update_features()
 			AUDIO::SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
 	}
 
-	update_weapon_features(bPlayerExists, playerPed);
+	update_weapon_features(bPlayerExists, player);
 
 	update_vehicle_features(bPlayerExists, playerPed);
 
@@ -325,6 +348,16 @@ void update_features()
 		tm t;
 		localtime_s(&t, &now);
 		TIME::SET_CLOCK_TIME(t.tm_hour, t.tm_min, t.tm_sec);
+	}
+
+	if (featureTimeSlow)
+	{
+		GAMEPLAY::SET_TIME_SCALE(0.5f);
+	}
+	else if (featureTimeSlowUpdated)
+	{
+		featureTimeSlowUpdated = false;
+		GAMEPLAY::SET_TIME_SCALE(1.0f);
 	}
 
 	// hide hud
@@ -708,7 +741,7 @@ bool onconfirm_time_menu ( MenuItem<int> choice )
 
 void process_time_menu ()
 {
-	const int lineCount = 4;
+	const int lineCount = 5;
 
 	std::string caption = "Time Options";
 
@@ -716,7 +749,8 @@ void process_time_menu ()
 		{ "Hour Forward", NULL, NULL, true },
 		{ "Hour Backward", NULL, NULL, true },
 		{ "Clock Paused", &featureTimePaused, &featureTimePausedUpdated },
-		{ "Sync With System", &featureTimeSynced, NULL }
+		{ "Sync With System", &featureTimeSynced, NULL },
+		{ "Slow Motion", &featureTimeSlow, &featureTimeSlowUpdated }
 	};
 
 	draw_menu_from_struct_def ( lines, lineCount, &activeLineIndexTime, caption, onconfirm_time_menu );
@@ -735,7 +769,6 @@ bool onconfirm_world_menu ( MenuItem<int> choice )
 		break;
 	case 2:
 		// featureWorldRandomCops being set in update_features
-		PED::SET_CREATE_RANDOM_COPS ( !featureWorldRandomCops );
 		break;
 	case 3:
 		VEHICLE::SET_RANDOM_TRAINS ( featureWorldRandomTrains );
@@ -755,6 +788,9 @@ void process_world_menu ()
 	const int lineCount = 6;
 
 	std::string caption = "World Options";
+
+	// read default feature values from the game
+	featureWorldRandomCops = (PED::CAN_CREATE_RANDOM_COPS() == TRUE);
 
 	StandardOrToggleMenuDef lines[lineCount] = {
 		{ "Time", NULL, NULL },
@@ -862,14 +898,15 @@ bool onconfirm_misc_menu(MenuItem<int> choice)
 
 void process_misc_menu()
 {
-	const int lineCount = 3;
+	const int lineCount = 4;
 
-	std::string caption = "Misc Options";
+	std::string caption = "Miscellaneous Options";
 
 	StandardOrToggleMenuDef lines[lineCount] = {
 		{ "Portable Radio", &featurePlayerRadio, &featurePlayerRadioUpdated, true },
 		{"Next Radio Track",	NULL,					NULL, true},
-		{"Hide HUD",			&featureMiscHideHud,	NULL}
+		{"Hide HUD",			&featureMiscHideHud,	NULL},
+		{"Reset Skin On Death", &featurePlayerResetOnDeath, NULL}
 	};
 
 	draw_menu_from_struct_def(lines, lineCount, &activeLineIndexMisc, caption, onconfirm_misc_menu);
@@ -906,6 +943,9 @@ bool onconfirm_main_menu(MenuItem<int> choice)
 	case 6:
 		process_misc_menu();
 		break;
+	case 7:
+		reset_globals();
+		break;
 	}
 	return false;
 }
@@ -921,7 +961,8 @@ void process_main_menu()
 		"Vehicles",
 		"World/Time",
 		"Weather",
-		"Miscellaneous"
+		"Miscellaneous",
+		"Reset All Settings"
 	};
 
 	std::vector<MenuItem<int>*> menuItems;
@@ -930,7 +971,7 @@ void process_main_menu()
 		MenuItem<int> *item = new MenuItem<int>();
 		item->caption = TOP_OPTIONS[i];
 		item->value = i;
-		item->isLeaf = false;
+		item->isLeaf = (i==7);
 		item->currentMenuIndex = i;
 		menuItems.push_back(item);
 	}
@@ -959,28 +1000,20 @@ void reset_globals()
 	lastWeatherName.clear();
 
 	featurePlayerInvincible			=
-	featurePlayerInvincibleUpdated	=
 	featurePlayerNeverWanted		=
-	featurePlayerNeverWantedUpdated =
 	featurePlayerIgnoredByPolice			=
-	featurePlayerIgnoredByPoliceUpdated		=
 	featurePlayerIgnoredByAll =
-	featurePlayerIgnoredByAllUpdated =
 	featurePlayerUnlimitedAbility	=
 	featurePlayerNoNoise			=
-	featurePlayerNoNoiseUpdated		=
 	featurePlayerFastSwim			=
-	featurePlayerFastSwimUpdated	=
 	featurePlayerFastRun			=
-	featurePlayerFastRunUpdated		=
 	featurePlayerSuperJump			=
 	featurePlayerInvisible			=
-	featurePlayerInvisibleUpdated	=
+
 	featurePlayerRadio				=
-	featurePlayerRadioUpdated		=
+
 	featureWorldMoonGravity			=
 	featureTimePaused				=
-	featureTimePausedUpdated		=
 	featureTimeSynced				=
 	featureWeatherWind				=
 	featureWeatherFreeze			=
@@ -992,13 +1025,33 @@ void reset_globals()
 	featureWorldRandomTrains	=
 	featureWorldRandomBoats		=
 	featureWorldGarbageTrucks	=	true;
+
+	featureTimeSlow = false;
+
+	featurePlayerResetOnDeath = true;
+
+	featurePlayerInvincibleUpdated =
+	featurePlayerNeverWantedUpdated =
+	featurePlayerIgnoredByPoliceUpdated =
+	featurePlayerIgnoredByAllUpdated =
+	featurePlayerNoNoiseUpdated =
+	featurePlayerFastSwimUpdated =
+	featurePlayerFastRunUpdated =
+	featurePlayerRadioUpdated =
+	featurePlayerInvisibleUpdated =
+	featureTimeSlowUpdated =
+	featureTimePausedUpdated = true;
+
+	save_settings();
 }
 
 void main()
 {	
-	reset_globals();
+	//reset_globals();
 
 	set_periodic_feature_call(update_features);
+
+	load_settings();
 
 	// this creates a new locale based on the current application default
 	// (which is either the one given on startup, but can be overriden with
@@ -1031,25 +1084,24 @@ void main()
 
 void ScriptMain()
 {
+	write_text_to_log_file("ScriptMain called");
 	clear_log_file();
+	//exiting = false;
+
 	srand(GetTickCount());
 	read_config_file();
 	main();
+
+	write_text_to_log_file("ScriptMain ended");
 }
 
-void clear_log_file()
+void ScriptTidyUp()
 {
-	remove("ent-log.txt");
-}
+	write_text_to_log_file("ScriptTidyUp called");
 
-void write_text_to_log_file(const std::string &text)
-{
-	if (!DEBUG_LOG_ENABLED)
-	{
-		return;
-	}
-	std::ofstream log_file( "ent-log.txt", std::ios_base::out | std::ios_base::app);
-	log_file << text << std::endl;
+	save_settings();
+
+	write_text_to_log_file("ScriptTidyUp done");
 }
 
 void turn_off_never_wanted()
@@ -1057,4 +1109,170 @@ void turn_off_never_wanted()
 	featurePlayerNeverWanted = false;
 	featurePlayerNeverWantedUpdated = false;
 	PLAYER::SET_MAX_WANTED_LEVEL(5);
+}
+
+void set_all_nearby_peds_to_calm(Ped playerPed, int count)
+{
+	const int numElements = count;
+	const int arrSize = numElements * 2 + 2;
+
+	Ped *peds = new Ped[arrSize];
+	peds[0] = numElements;
+	int found = PED::GET_PED_NEARBY_PEDS(playerPed, peds, -1);
+	int y = 0;
+	for (int i = 0; i < found; i++)
+	{
+		int offsettedID = i * 2 + 2;
+
+		if (!ENTITY::DOES_ENTITY_EXIST(peds[offsettedID]))
+		{
+			continue;
+		}
+
+		Ped xped = peds[offsettedID];
+
+		y++;
+		PED::SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(xped, true);
+		PED::SET_PED_FLEE_ATTRIBUTES(xped, 0, 0);
+		PED::SET_PED_COMBAT_ATTRIBUTES(xped, 17, 1);
+	}
+	delete peds;
+}
+
+void update_feature_enablements(std::vector<FeatureEnabledLocalDefinition> pairs)
+{
+	for (int i = 0; i < pairs.size(); i++)
+	{
+		FeatureEnabledLocalDefinition pair = pairs.at(i);
+	}
+}
+
+std::vector<FeatureEnabledLocalDefinition> get_feature_enablements()
+{
+	std::vector<FeatureEnabledLocalDefinition> results;
+
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerInvincible", &featurePlayerInvincible, &featurePlayerInvincibleUpdated });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerNeverWanted", &featurePlayerNeverWanted, &featurePlayerNeverWantedUpdated });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerIgnoredByPolice", &featurePlayerIgnoredByPolice, &featurePlayerIgnoredByPoliceUpdated });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerIgnoredByAll", &featurePlayerIgnoredByAll, &featurePlayerIgnoredByAllUpdated });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerUnlimitedAbility", &featurePlayerUnlimitedAbility });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerNoNoise", &featurePlayerNoNoise, &featurePlayerNoNoiseUpdated });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerFastSwim", &featurePlayerFastSwim, &featurePlayerFastSwimUpdated });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerFastRun", &featurePlayerFastRun, &featurePlayerFastRunUpdated });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerSuperJump", &featurePlayerSuperJump });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerInvisible", &featurePlayerInvisible, &featurePlayerInvisibleUpdated });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerRadio", &featurePlayerRadio, &featurePlayerRadioUpdated });
+
+	results.push_back(FeatureEnabledLocalDefinition{ "featureWorldMoonGravity", &featureWorldMoonGravity });
+	results.push_back(FeatureEnabledLocalDefinition{ "featureWorldRandomCops", &featureWorldRandomCops });
+	results.push_back(FeatureEnabledLocalDefinition{ "featureWorldRandomTrains", &featureWorldRandomTrains });
+	results.push_back(FeatureEnabledLocalDefinition{ "featureWorldRandomBoats", &featureWorldRandomBoats });
+	results.push_back(FeatureEnabledLocalDefinition{ "featureWorldGarbageTrucks", &featureWorldGarbageTrucks });
+
+	results.push_back(FeatureEnabledLocalDefinition{ "featureTimePaused", &featureTimePaused, &featureTimePausedUpdated });
+	results.push_back(FeatureEnabledLocalDefinition{ "featureTimeSynced", &featureTimeSynced });
+	results.push_back(FeatureEnabledLocalDefinition{ "featureTimeSlow", &featureTimeSlow, &featureTimeSlowUpdated });
+
+	results.push_back(FeatureEnabledLocalDefinition{ "featureWeatherWind", &featureWeatherWind });
+	results.push_back(FeatureEnabledLocalDefinition{ "featureWeatherFreeze", &featureWeatherFreeze });
+
+	results.push_back(FeatureEnabledLocalDefinition{ "featureMiscLockRadio", &featureMiscLockRadio });
+	results.push_back(FeatureEnabledLocalDefinition{ "featureMiscHideHud", &featureMiscHideHud });
+
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerResetOnDeath", &featurePlayerResetOnDeath });
+
+	std::vector<FeatureEnabledLocalDefinition> vehResults = get_feature_enablements_vehicles();
+	results.insert(results.end(), vehResults.begin(), vehResults.end());
+
+	std::vector<FeatureEnabledLocalDefinition> weapResults = get_feature_enablements_weapons();
+	results.insert(results.end(), weapResults.begin(), weapResults.end());
+
+	return results;
+}
+
+std::vector<StringPairSettingDBRow> get_generic_settings()
+{
+	std::vector<StringPairSettingDBRow> settings;
+	settings.push_back(StringPairSettingDBRow{ "lastWeather", lastWeather });
+	settings.push_back(StringPairSettingDBRow{ "lastWeatherName", lastWeatherName });
+	return settings;
+}
+
+void handle_generic_settings(std::vector<StringPairSettingDBRow> settings)
+{
+	for (int i = 0; i < settings.size(); i++)
+	{
+		StringPairSettingDBRow setting = settings.at(i);
+		if (setting.name.compare("lastWeather") == 0)
+		{
+			lastWeather = setting.value;
+		}
+		else if (setting.name.compare("lastWeatherName") == 0)
+		{
+			lastWeatherName = setting.value;
+		}
+	}
+
+	//pass to anyone else, vehicles, weapons etc
+}
+
+DWORD WINAPI save_settings_thread(LPVOID lpParameter)
+{
+	save_settings();
+	return 0;
+}
+
+void save_settings()
+{
+	if (!everInitialised)
+	{
+		return;
+	}
+
+	write_text_to_log_file("Saving settings, start");
+
+	/*
+	if (!db_mutex.try_lock())
+	{
+		write_text_to_log_file("Couldn't get lock, aborting");
+		return;
+	}
+	*/
+
+	write_text_to_log_file("Locked");
+
+	ENTDatabase database;
+	database.open();
+
+	write_text_to_log_file("Actually saving");
+	database.store_setting_pairs(get_generic_settings());
+	database.store_feature_enabled_pairs(get_feature_enablements());
+	write_text_to_log_file("Save flag released");
+
+	database.close();
+	write_text_to_log_file("Closed");
+
+	write_text_to_log_file("Unlocking");
+	//db_mutex.unlock();
+	write_text_to_log_file("Unlocked");
+}
+
+void load_settings()
+{
+	/*if (!db_mutex.try_lock())
+	{
+		write_text_to_log_file("Couldn't get lock, aborting");
+		return;
+	}*/
+
+	ENTDatabase database;
+	database.open();
+
+	handle_generic_settings(database.load_setting_pairs());
+	database.load_feature_enabled_pairs(get_feature_enablements());
+
+	database.close();
+	write_text_to_log_file("Closed");
+
+	//db_mutex.unlock();
 }

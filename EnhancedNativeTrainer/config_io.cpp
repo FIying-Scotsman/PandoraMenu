@@ -7,6 +7,7 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 #include "config_io.h"
 #include "keyboard.h"
 #include "script.h"
+#include "debuglog.h"
 #include <sstream>
 
 // A global Windows "basic string". Actual memory is allocated by the
@@ -178,6 +179,10 @@ void KeyInputConfig::set_key(char* function, char* keyName)
 	else if (strcmp(function, "airbrake_speed") == 0)
 	{
 		key_airbrake_speed = vkID;
+	}
+	else if (strcmp(function, "hotkey_throughdoor") == 0)
+	{
+		key_hotkey_throughdoor = vkID;
 	}
 
 	else
