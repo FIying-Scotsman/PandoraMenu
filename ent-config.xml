@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ent-config>
+  <keys>
+    <!--
+    A listing of available key values is available at http://www.garybeene.com/code/gbsnippets_gbs_00292.htm 
+    Most if not all of those are supported, at least in theory.
+    For now, if you want controller input, you need to map it to a key first using some utility.
+    If you cock up this file and enter an invalid key, the default will be used instead.
+    If you manage to assign the same key to multiple functions, who knows?
+    
+    Use VK_NOTHING to signify no assignment.
+    
+    -->
+    <key function="toggle_main_menu" value="VK_F4"/>
+
+    <key function="menu_up" value="VK_NUMPAD8"/>
+    <key function="menu_down" value="VK_NUMPAD2"/>
+    <key function="menu_left" value="VK_NUMPAD4"/>
+    <key function="menu_right" value="VK_NUMPAD6"/>
+    <key function="menu_select" value="VK_NUMPAD5"/>
+    <key function="menu_back" value="VK_NUMPAD0"/>
+
+    <key function="veh_boost" value="VK_NUMPAD9"/> <!--this is what speeds up a vehicle-->
+    <key function="veh_stop" value="VK_NUMPAD3"/> <!--this is what stops a vehicle immediately-->
+    <key function="veh_rockets" value="VK_ADD"/>
+
+    <!--The following are for the feature that lets you move around beyond normal limits, e.g. noclip-->
+    
+    <key function="toggle_airbrake" value="VK_F6"/>
+    <key function="hotkey_throughdoor" value="VK_DIVIDE" modCtrl="true" modAlt="false" modShift="false"/>
+
+    <key function="airbrake_up" value="VK_KEY_Q"/>
+    <key function="airbrake_down" value="VK_KEY_Z"/>
+    <key function="airbrake_forward" value="VK_KEY_W"/>
+    <key function="airbrake_back" value="VK_KEY_S"/>
+    <key function="airbrake_rotate_left" value="VK_KEY_A"/>
+    <key function="airbrake_rotate_right" value="VK_KEY_D"/>
+    <key function="airbrake_speed" value="VK_SHIFT"/>
+    <key function="airbrake_freeze_time" value="VK_KEY_T"/>
+    <key function="airbrake_help" value="VK_KEY_H"/>
+    
+    <!-- Uncomment these and change the attributes to set your hotkeys-->
+    <!--
+    <key function="hotkey_1" value="VK_NOTHING" modCtrl="false" modAlt="false" modShift="false"/>
+    <key function="hotkey_2" value="VK_NOTHING" modCtrl="false" modAlt="false" modShift="false"/>
+    <key function="hotkey_3" value="VK_NOTHING" modCtrl="false" modAlt="false" modShift="false"/>
+    <key function="hotkey_4" value="VK_NOTHING" modCtrl="false" modAlt="false" modShift="false"/>
+    <key function="hotkey_5" value="VK_NOTHING" modCtrl="false" modAlt="false" modShift="false"/>
+    <key function="hotkey_6" value="VK_NOTHING" modCtrl="false" modAlt="false" modShift="false"/>
+    <key function="hotkey_7" value="VK_NOTHING" modCtrl="false" modAlt="false" modShift="false"/>
+    <key function="hotkey_8" value="VK_NOTHING" modCtrl="false" modAlt="false" modShift="false"/>
+    <key function="hotkey_9" value="VK_NOTHING" modCtrl="false" modAlt="false" modShift="false"/>
+    -->
+
+    <!--
+    This next bit should be self-explanatory. The function names are the same.
+    Add multiple buttons to a single entry to produce a combo.
+    The setup provided below should be the default.
+    
+    Available controller values you can use:
+    
+        BUTTON_X
+        BUTTON_Y
+        BUTTON_A
+        BUTTON_B
+        DPAD_LEFT
+        DPAD_RIGHT
+        DPAD_UP
+        DPAD_DOWN
+        L_SHOULDER
+        R_SHOULDER
+        L_TRIGGER
+        R_TRIGGER
+        BACK
+        START
+        L_STICK_LEFT
+        L_STICK_RIGHT
+        L_STICK_UP
+        L_STICK_DOWN
+        R_STICK_LEFT
+        R_STICK_RIGHT
+        R_STICK_UP
+        R_STICK_DOWN
+        L_STICK_CLICK
+        R_STICK_CLICK
+        NOT_BOUND - this can be used to assign no button
+    -->
+
+    <controller function="toggle_main_menu">
+      <button value="R_SHOULDER"/>
+      <button value="BUTTON_Y"/>
+    </controller>
+
+    <controller function="menu_up">
+      <button value="DPAD_UP"/>
+    </controller>
+    <controller function="menu_down">
+      <button value="DPAD_DOWN"/>
+    </controller>
+    <controller function="menu_left">
+      <button value="DPAD_LEFT"/>
+    </controller>
+    <controller function="menu_right">
+      <button value="DPAD_RIGHT"/>
+    </controller>
+    <controller function="menu_select">
+      <button value="BUTTON_X"/>
+    </controller>
+    <controller function="menu_back">
+      <button value="BUTTON_Y"/>
+    </controller>
+
+    <controller function="veh_boost">
+      <button value="L_SHOULDER"/>
+      <button value="L_TRIGGER"/>
+    </controller>
+    <controller function="veh_stop">
+      <button value="R_SHOULDER"/>
+      <button value="R_TRIGGER"/>
+    </controller>
+    <controller function="veh_rockets">
+      <button value="L_SHOULDER"/>
+      <button value="R_SHOULDER"/>
+    </controller>
+
+    <controller function="toggle_airbrake">
+      <button value="R_SHOULDER"/>
+      <button value="BUTTON_A"/>
+    </controller>
+    
+    <controller function="hotkey_throughdoor"></controller> <!--i.e. no controller combo-->
+
+    <controller function="airbrake_up">
+      <button value="L_TRIGGER"/>
+    </controller>
+    <controller function="airbrake_down">
+      <button value="R_TRIGGER"/>
+    </controller>
+    <controller function="airbrake_forward">
+      <button value="L_STICK_UP"/>
+    </controller>
+    <controller function="airbrake_back">
+      <button value="L_STICK_DOWN"/>
+    </controller>
+    <controller function="airbrake_rotate_left">
+      <button value="L_STICK_LEFT"/>
+    </controller>
+    <controller function="airbrake_rotate_right">
+      <button value="L_STICK_RIGHT"/>
+    </controller>
+    <controller function="airbrake_speed">
+      <button value="BUTTON_A"/>
+    </controller>
+    <controller function="airbrake_freeze_time">
+      <button value="BUTTON_B"/>
+    </controller>
+
+    -->
+  </keys>
+</ent-config>
