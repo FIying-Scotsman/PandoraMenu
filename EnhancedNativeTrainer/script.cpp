@@ -688,12 +688,12 @@ void process_player_menu()
 	StandardOrToggleMenuDef lines[lineCount] = {
 		{"Player Skin", NULL, NULL, false},
 		{"Heal Player", NULL, NULL, true},
-		{"Add Cash", NULL, NULL, true, CASH},
+		{"Add Cash ~g~(SP)", NULL, NULL, true, CASH},
 		{"Wanted Level", NULL, NULL, true, WANTED},
-		{ "Never Wanted", &featurePlayerNeverWanted, &featurePlayerNeverWantedUpdated, true },
+		{"Never Wanted", &featurePlayerNeverWanted, &featurePlayerNeverWantedUpdated, true },
 		{"Invincible", &featurePlayerInvincible, &featurePlayerInvincibleUpdated, true},
 		{"Police Ignore You", &featurePlayerIgnoredByPolice, &featurePlayerIgnoredByPoliceUpdated, true },
-		{ "Everyone Ignores You", &featurePlayerIgnoredByAll, &featurePlayerIgnoredByAllUpdated, true },
+		{"Everyone Ignores You", &featurePlayerIgnoredByAll, &featurePlayerIgnoredByAllUpdated, true },
 		{"Unlimited Ability", &featurePlayerUnlimitedAbility, NULL, true},
 		{"Noiseless", &featurePlayerNoNoise, &featurePlayerNoNoiseUpdated, true},
 		{"Fast Swim", &featurePlayerFastSwim, &featurePlayerFastSwimUpdated, true},
@@ -952,7 +952,7 @@ bool onconfirm_main_menu(MenuItem<int> choice)
 
 void process_main_menu()
 {
-	std::string caption = "Enhanced Native Trainer";
+	std::string caption = "Pandora's Box"; //title
 
 	std::vector<std::string> TOP_OPTIONS = {
 		"Player",
