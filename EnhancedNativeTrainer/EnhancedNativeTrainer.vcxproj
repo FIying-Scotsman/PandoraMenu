@@ -61,7 +61,7 @@
     <ProjectGuid>{8D82F34A-1D64-465B-84B1-37F89AD3D20B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>EnhancedNativeTrainer</RootNamespace>
-    <ProjectName>EnhancedNativeTrainer</ProjectName>
+    <ProjectName>Pandora's Box (ENT)</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
