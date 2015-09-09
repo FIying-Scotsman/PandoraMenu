@@ -249,7 +249,7 @@ void teleport_to_coords(Entity e, Vector3 coords)
 {
 	ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, coords.x, coords.y, coords.z, 0, 0, 1);
 	WAIT(0);
-	set_status_text("Teleported");
+	set_status_text("~g~Teleported!");
 }
 
 void output_current_location(Entity e)
@@ -315,7 +315,7 @@ void teleport_to_marker(Entity e)
 	}
 	else
 	{
-		set_status_text("Map marker isn't set");
+		set_status_text("~r~Error: ~r~ Map marker isn't set");
 	}
 }
 
@@ -359,7 +359,7 @@ bool onconfirm_teleport_location(MenuItem<int> choice)
 
 	if (value->scenery_required.size() > 0 && !value->isLoaded)
 	{
-		set_status_text("Loading new scenery...");
+		set_status_text("~o~Loading new scenery...");
 		
 		if ( ENTITY::DOES_ENTITY_EXIST ( PLAYER::PLAYER_PED_ID () ) )// && STREAMING::IS_IPL_ACTIVE("plg_01") == 0)
 		{
@@ -378,7 +378,7 @@ bool onconfirm_teleport_location(MenuItem<int> choice)
 			WAIT(0);
 		}
 
-		set_status_text("New scenery loaded");
+		set_status_text("New scenery ~g~loaded!");
 
 		time = GetTickCount() + 1000;
 		while (GetTickCount() < time)
@@ -418,7 +418,7 @@ bool onconfirm_teleport_location(MenuItem<int> choice)
 			{
 				if (!unloadedAnything)
 				{
-					set_status_text("Unloading old scenery...");
+					set_status_text("~o~Unloading old scenery...");
 					time = GetTickCount() + 1000;
 					while (GetTickCount() < time)
 					{
@@ -444,7 +444,7 @@ bool onconfirm_teleport_location(MenuItem<int> choice)
 
 	if (unloadedAnything)
 	{
-		set_status_text("Old scenery unloaded");
+		set_status_text("~g~Old scenery unloaded");
 
 		time = GetTickCount() + 1000;
 		while (GetTickCount() < time)

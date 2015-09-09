@@ -149,10 +149,13 @@ void menu_beep()
 
 void update_status_text()
 {
+	int screen_w, screen_h;
+	GRAPHICS::GET_SCREEN_RESOLUTION(&screen_w, &screen_h);
+
 	if (GetTickCount() < statusTextDrawTicksMax)
 	{
 		UI::SET_TEXT_FONT(0);
-		UI::SET_TEXT_SCALE(0.55, 0.55);
+		UI::SET_TEXT_SCALE(0.65, 0.65); //(0.55, 0.55
 		UI::SET_TEXT_COLOUR(255, 255, 255, 255);
 		UI::SET_TEXT_WRAP(0.0, 1.0);
 		UI::SET_TEXT_CENTRE(1);
@@ -160,17 +163,16 @@ void update_status_text()
 		UI::SET_TEXT_EDGE(1, 0, 0, 0, 205);
 		if (statusTextGxtEntry)
 		{
-			UI::_SET_TEXT_ENTRY((char *)statusText.c_str());
+			UI::_SET_TEXT_ENTRY((char *)statusText.c_str()); //UI::_SET_TEXT_ENTRY((char *)statusText.c_str());
 		}
 		else
 		{
-			UI::_SET_TEXT_ENTRY("STRING");
+			UI::_SET_TEXT_ENTRY("STRING"); //UI::_SET_TEXT_ENTRY("STRING");
 			UI::_ADD_TEXT_COMPONENT_STRING((char *)statusText.c_str());
 		}
-		UI::_DRAW_TEXT(0.5, 0.5);
+		UI::_DRAW_TEXT(0.5, 0.85); // X Y: 0.5, 0.5
 	}
 }
-
 void draw_menu_from_struct_def(StandardOrToggleMenuDef defs[], int lineCount, int* selectionRef, std::string caption, bool(*onConfirmation)(MenuItem<int> value))
 {
 	std::vector<MenuItem<int>*> menuItems;
