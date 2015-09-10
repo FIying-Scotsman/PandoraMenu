@@ -952,7 +952,7 @@ bool onconfirm_main_menu(MenuItem<int> choice)
 
 void process_main_menu()
 {
-	std::string caption = "Pandora's Box"; //title
+	std::string caption = "Pandora\'s Box"; //title
 
 	std::vector<std::string> TOP_OPTIONS = {
 		"Player",

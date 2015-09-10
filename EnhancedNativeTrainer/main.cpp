@@ -9,10 +9,10 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 */
 
 #include "inc\main.h"
-#include "script.h"
-#include "keyboard.h"
-#include "config_io.h"
-#include "debuglog.h"
+#include "src\features\script.h"
+#include "src\io\keyboard.h"
+#include "src\io\config_io.h"
+#include "src\debug\debuglog.h"
 
 #include <thread>
 
@@ -21,19 +21,13 @@ BOOL APIENTRY DllMain(HMODULE hInstance, DWORD reason, LPVOID lpReserved)
 	switch (reason)
 	{
 	case DLL_PROCESS_ATTACH:
-		write_text_to_log_file("Attach");
 		scriptRegister(hInstance, ScriptMain);
 		keyboardHandlerRegister(OnKeyboardMessage);
-		write_text_to_log_file("Done attaching");
 		break;
 	case DLL_PROCESS_DETACH:
-		write_text_to_log_file("Detach");
 		scriptUnregister(ScriptMain);
-		write_text_to_log_file("Unregistered");
 		keyboardHandlerUnregister(OnKeyboardMessage);
-		write_text_to_log_file("Unregistered KB");
 		ScriptTidyUp();
-		write_text_to_log_file("Tidied up");
 		break;
 	}
 	return TRUE;
