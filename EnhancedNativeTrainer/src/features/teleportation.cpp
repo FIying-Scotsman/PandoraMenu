@@ -304,9 +304,17 @@ std::vector<tele_location> VOV_LOCATIONS[] = { LOCATIONS_SAFE, LOCATIONS_LANDMAR
 
 void teleport_to_coords(Entity e, Vector3 coords)
 {
+
+	//particle effects
+
+	STREAMING::REQUEST_NAMED_PTFX_ASSET("scr_rcbarry1");//scr_rcbarry2
+	GRAPHICS::_SET_PTFX_ASSET_NEXT_CALL("scr_rcbarry1");//scr_rcbarry2
+	GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_ENTITY("scr_alien_teleport", PLAYER::PLAYER_PED_ID(), 0.0, 0.0, -0.5, 0.0, 0.0, 0.0, 1.0, false, false, false);
+
 	ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, coords.x, coords.y, coords.z, 0, 0, 1);
 	WAIT(0);
-	set_status_text("Teleported");
+	
+	set_status_text("~g~Teleported");
 }
 
 void output_current_location(Entity e)
@@ -369,10 +377,16 @@ void teleport_to_marker(Entity e)
 
 		//do it
 		teleport_to_coords(e, coords);
+
+		//particle effects
+
+		STREAMING::REQUEST_NAMED_PTFX_ASSET("scr_rcbarry1");//scr_rcbarry2
+		GRAPHICS::_SET_PTFX_ASSET_NEXT_CALL("scr_rcbarry1");//scr_rcbarry2
+		GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_ENTITY("scr_alien_teleport", PLAYER::PLAYER_PED_ID(), 0.0, 0.0, -0.5, 0.0, 0.0, 0.0, 1.0, false, false, false);
 	}
 	else
 	{
-		set_status_text("Map marker isn't set");
+		set_status_text("~r~Error:~r~Map marker isn't set");
 	}
 }
 

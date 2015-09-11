@@ -78,6 +78,7 @@ bool applyChosenSkin(DWORD model)
 {
 	if (STREAMING::IS_MODEL_IN_CDIMAGE(model) && STREAMING::IS_MODEL_VALID(model))
 	{
+		
 		STREAMING::REQUEST_MODEL(model);
 		while (!STREAMING::HAS_MODEL_LOADED(model))	WAIT(0);
 		//STREAMING::LOAD_ALL_OBJECTS_NOW();
@@ -90,10 +91,13 @@ bool applyChosenSkin(DWORD model)
 
 		save_player_weapons();
 
+		
 		PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), model);
+
 		//PED::SET_PED_RANDOM_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), FALSE);
 		PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
 		WAIT(0);
+		
 
 		if (veh != NULL)
 		{
@@ -105,6 +109,11 @@ bool applyChosenSkin(DWORD model)
 		//reset the skin detail choice
 		skinDetailMenuIndex = 0;
 		skinDetailMenuValue = 0;
+
+		//Particle FX
+		STREAMING::REQUEST_NAMED_PTFX_ASSET("scr_rcbarry2");
+		GRAPHICS::_SET_PTFX_ASSET_NEXT_CALL("scr_rcbarry2");
+		GRAPHICS::START_PARTICLE_FX_NON_LOOPED_ON_ENTITY("scr_clown_appears", PLAYER::PLAYER_PED_ID(), 0.0, 0.0, 0.3, 0.0, 0.0, 0.0, 0.7, false, false, false); //scale = 1.0
 
 		WAIT(100);
 		STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
@@ -540,7 +549,7 @@ bool onconfirm_skinchanger_menu(MenuItem<int> choice)
 		break;
 	case 5: //Reset
 		PED::SET_PED_DEFAULT_COMPONENT_VARIATION(playerPed);
-		set_status_text("Using default model skin");
+		set_status_text("~g~Using default model skin");
 		break;
 	case 6:
 		process_prop_menu();

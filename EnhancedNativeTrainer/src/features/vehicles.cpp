@@ -24,6 +24,15 @@ bool featureVehicleDoorInstant = false;
 bool featureWearHelmetOff = false;
 bool featureWearHelmetOffUpdated = false;
 
+bool featureDriftMode = false;
+bool featureDriftModeUpdated = false;
+
+bool featureSuperGrip = false;
+bool featureSuperGripUpdated = false;
+
+bool featureNoVehicleCollision = false;
+bool featureNoVehicleCollisionUpdated = false;
+
 int activeLineIndexVeh = 0;
 int activeSavedVehicleIndex = -1;
 std::string activeSavedVehicleSlotName;
@@ -56,13 +65,13 @@ int doorOptionsMenuIndex = 0;
 
 //Top Level
 
-const std::vector<std::string> MENU_VEHICLE_CATEGORIES{ "Cars", "Industrial", "Emergency and Military", "Motorcycles", "Planes", "Helicopters", "Boats", "Bicycles", "Enter Name Manually" };
+const std::vector<std::string> MENU_VEHICLE_CATEGORIES{ "Cars", "Industrial", "Emergency and Military", "Motorcycles", "Planes", "Helicopters", "Boats", "Bicycles", "~g~Enter Name Manually" };
 
 //Cars
 
 const std::vector<std::string> MENU_CAR_CATEGORIES{ "Supercars", "Sports", "Sport Classics", "Coupes", "Muscle", "Offroad", "SUVs", "Sedans", "Compacts" };
 
-const std::vector<std::string> CAPTIONS_SUPERCARS{ "Coil Voltic", "Grotti Cheetah", "Grotti Turismo R", "Overflod Entity XF", "Pegassi Infernus", "Pegassi Osiris", "Pegassi Vacca", "Pegassi Zentorno", "Truffade Adder", "Vapid Bullet" };
+const std::vector<std::string> CAPTIONS_SUPERCARS{ "Coil Voltic", "Grotti Cheetah", "Grotti Turismo R", "Overflod Entity XF", "Pegassi Infernus", "Pegassi Osiris", "Pegassi Vacca", "Pegassi Zentorno", "Truffade Adder", "Vapid Bullet", "Progen T20" };
 
 const std::vector<std::string> CAPTIONS_SPORTS{ "Albany Alpha", "Annis Elegy RH8", "Benefactor Feltzer", "Benefactor Schwartzer", "Benefactor Surano", "Bravado Banshee", "Bravado Buffalo", "Bravado Buffalo S", "Bravado Buffalo S (Race)", "Dewbauchee Massacro", "Dewbauchee Massacro (Race)", "Dewbauchee Rapid GT", "Dewbauchee Rapid GT Cabrio", "Dinka Blista Compact", "Dinka Blista Compact (Go Go Monkey Race)", "Dinka Jester", "Dinka Jester (Race)", "Grotti Carbonizzare", "Hijak Khamelion", "Invetero Coquette", "Karin Futo", "Karin Kuruma", "Karin Kuruma (Armoured)", "Karin Sultan", "Lampadati Furore GT", "Maibatsu Penumbra", "Obey 9F", "Obey 9F Cabrio", "Phister Comet", "Schyster Fusilade" };
 
@@ -70,9 +79,9 @@ const std::vector<std::string> CAPTIONS_SPORTCLASSICS{ "Albany Manana", "Albany 
 
 const std::vector<std::string> CAPTIONS_COUPES{ "Dewbauchee Exemplar", "Enus Cognoscenti Cabrio", "Enus Windsor", "Lampadati Felon", "Lampadati Felon GT", "Ocelot F620", "Ocelot Jackal", "Ubermacht Sentinel", "Ubermacht Sentinel XS", "Ubermacht Zion", "Ubermacht Zion Cabrio" };
 
-const std::vector<std::string> CAPTIONS_MUSCLE{ "Albany Buccaneer", "Albany Virgo", "Bravado Gauntlet", "Bravado Gauntlet (Race)", "Cheval Picador", "Declasse Sabre Turbo", "Declasse Stallion", "Declasse Stallion (Race)", "Declasse Vigero", "Declasse Voodoo", "Imponte Duke O' Death", "Imponte Dukes", "Imponte Phoenix", "Imponte Ruiner", "Vapid Blade", "Vapid Dominator", "Vapid Dominator (Race)", "Vapid Hotknife", "Vapid Slamvan", "Vapid Slamvan (Lost MC)" };
+const std::vector<std::string> CAPTIONS_MUSCLE{ "Albany Buccaneer", "Albany Virgo", "Bravado Gauntlet", "Bravado Gauntlet (Race)", "Cheval Picador", "Coquette BlackFin", "Declasse Sabre Turbo", "Declasse Stallion", "Declasse Stallion (Race)", "Declasse Vigero", "Declasse Voodoo", "Imponte Duke O' Death", "Imponte Dukes", "Imponte Phoenix", "Imponte Ruiner", "Vapid Blade", "Vapid Dominator", "Vapid Dominator (Race)", "Vapid Hotknife", "Vapid Slamvan", "Vapid Slamvan (Lost MC)", "Vapid Chino" };
 
-const std::vector<std::string> CAPTIONS_OFFROAD{ "Benefactor Dubsta 6x6", "BF Bifta", "BF Injection", "Bravado Dune", "Bravado Duneloader", "Bravado Space Docker", "Canis Bodhi", "Canis Kalahari", "Canis Mesa (Off-Road)", "Cheval Marshall", "Declasse Rancher XL", "Declasse Rancher XL (Snow)", "Insurgent", "Insurgent (Gun Mount)", "Karin Rebel", "Karin Rebel (Rusty)", "Karin Technical", "Nagasaki Blazer", "Nagasaki Blazer (Hot Rod)", "Nagasaki Blazer (Lifeguard)", "Vapid Guardian", "Vapid Sandking", "Vapid Sandking XL", "Vapid The Liberator" };
+const std::vector<std::string> CAPTIONS_OFFROAD{ "Benefactor Dubsta 6x6", "BF Bifta", "BF Injection", "Bravado Dune", "Bravado Duneloader", "Bravado Space Docker", "Canis Bodhi", "Canis Kalahari", "Canis Mesa (Off-Road)", "Cheval Marshall", "Declasse Rancher XL", "Declasse Rancher XL (Snow)", "Insurgent", "Insurgent (Gun Mount)", "Karin Rebel", "Karin Rebel (Rusty)", "Karin Technical", "Nagasaki Blazer", "Nagasaki Blazer (Hot Rod)", "Nagasaki Blazer (Lifeguard)", "Vapid Guardian", "Vapid Sandking", "Vapid Sandking XL", "Vapid The Liberator", "Coil Brawler" };
 
 const std::vector<std::string> CAPTIONS_SUVS{ "Albany Cavalcade", "Albany Cavalcade Mk2", "Benefactor Dubsta", "Benefactor Dubsta (Flat Black)", "Benefactor Serrano", "Bravado Gresley", "Canis Mesa", "Canis Mesa (Snow)", "Canis Seminole", "Declasse Granger", "Dundreary Landstalker", "Emperor Habanero", "Enus Huntley S", "Fathom FQ 2", "Gallivanter Baller (Large)", "Gallivanter Baller (Small)", "Karin BeeJay XL", "Mammoth Patriot", "Obey Rocoto", "Vapid Radius" };
 
@@ -80,7 +89,7 @@ const std::vector<std::string> CAPTIONS_SEDANS{ "Albany Emperor", "Albany Empero
 
 const std::vector<std::string> CAPTIONS_COMPACTS{ "Benefactor Panto", "Bollokan Prairie", "Declasse Rhapsody", "Dinka Blista", "Karin Dilettante", "Karin Dilettante (FlyUS)", "Weeny Issi" };
 
-const std::vector<std::string> VALUES_SUPERCARS{ "VOLTIC", "CHEETAH", "TURISMOR", "ENTITYXF", "INFERNUS", "OSIRIS", "VACCA", "ZENTORNO", "ADDER", "BULLET" };
+const std::vector<std::string> VALUES_SUPERCARS{ "VOLTIC", "CHEETAH", "TURISMOR", "ENTITYXF", "INFERNUS", "OSIRIS", "VACCA", "ZENTORNO", "ADDER", "BULLET", "T20" };
 
 const std::vector<std::string> VALUES_SPORTS{ "ALPHA", "ELEGY2", "FELTZER2", "SCHWARZER", "SURANO", "BANSHEE", "BUFFALO", "BUFFALO2", "BUFFALO3", "MASSACRO", "MASSACRO2", "RAPIDGT", "RAPIDGT2", "BLISTA2", "BLISTA3", "JESTER", "JESTER2", "CARBONIZZARE", "KHAMELION", "COQUETTE", "FUTO", "KURUMA", "KURUMA2", "SULTAN", "FUROREGT", "PENUMBRA", "NINEF", "NINEF2", "COMET2", "FUSILADE" };
 
@@ -88,9 +97,9 @@ const std::vector<std::string> VALUES_SPORTCLASSICS{ "MANANA", "BTYPE", "FELTZER
 
 const std::vector<std::string> VALUES_COUPES{ "EXEMPLAR", "COGCABRIO", "WINDSOR", "FELON", "FELON2", "F620", "JACKAL", "SENTINEL2", "SENTINEL", "ZION", "ZION2" };
 
-const std::vector<std::string> VALUES_MUSCLE{ "BUCCANEER", "VIRGO", "GAUNTLET", "GAUNTLET2", "PICADOR", "SABREGT", "STALION", "STALION2", "VIGERO", "VOODOO2", "DUKES2", "DUKES", "PHOENIX", "RUINER", "BLADE", "DOMINATOR", "DOMINATOR2", "HOTKNIFE", "SLAMVAN", "SLAMVAN2" };
+const std::vector<std::string> VALUES_MUSCLE{ "BUCCANEER", "VIRGO", "GAUNTLET", "GAUNTLET2", "PICADOR","COQUETTE3", "SABREGT", "STALION", "STALION2", "VIGERO", "VOODOO2", "DUKES2", "DUKES", "PHOENIX", "RUINER", "BLADE", "DOMINATOR", "DOMINATOR2", "HOTKNIFE", "SLAMVAN", "SLAMVAN2", "CHINO" };
 
-const std::vector<std::string> VALUES_OFFROAD{ "DUBSTA3", "BIFTA", "BFINJECTION", "DUNE", "DLOADER", "DUNE2", "BODHI2", "KALAHARI", "MESA3", "MARSHALL", "RANCHERXL", "RANCHERXL2", "INSURGENT2", "INSURGENT", "REBEL2", "REBEL", "TECHNICAL", "BLAZER", "BLAZER3", "BLAZER2", "GUARDIAN", "SANDKING2", "SANDKING", "MONSTER" };
+const std::vector<std::string> VALUES_OFFROAD{ "DUBSTA3", "BIFTA", "BFINJECTION", "DUNE", "DLOADER", "DUNE2", "BODHI2", "KALAHARI", "MESA3", "MARSHALL", "RANCHERXL", "RANCHERXL2", "INSURGENT2", "INSURGENT", "REBEL2", "REBEL", "TECHNICAL", "BLAZER", "BLAZER3", "BLAZER2", "GUARDIAN", "SANDKING2", "SANDKING", "MONSTER", "BRAWLER" };
 
 const std::vector<std::string> VALUES_SUVS{ "CAVALCADE", "CAVALCADE2", "DUBSTA", "DUBSTA2", "SERRANO", "GRESLEY", "MESA", "MESA2", "SEMINOLE", "GRANGER", "LANDSTALKER", "HABANERO", "HUNTLEY", "FQ2", "BALLER", "BALLER2", "BJXL", "PATRIOT", "ROCOTO", "RADI" };
 
@@ -187,7 +196,7 @@ bool onconfirm_vehdoor_menu(MenuItem<int> choice) {
 		}
 		else
 		{
-			set_status_text("Player isn't in a vehicle");
+			set_status_text("~r~Error:~r~ Player isn't in a vehicle");
 		}
 	}
 	return false;
@@ -230,7 +239,7 @@ bool onconfirm_veh_menu(MenuItem<int> choice)
 
 	switch (activeLineIndexVeh)
 	{
-	case 0:
+	case 0: //case numbers have to be updated when new things added
 		if (process_carspawn_menu()) return false;
 		break;
 	case 1:
@@ -258,10 +267,10 @@ bool onconfirm_veh_menu(MenuItem<int> choice)
 
 				VEHICLE::SET_VEHICLE_ENGINE_ON(veh, true, true);
 
-				set_status_text("Vehicle Repaired");
+				set_status_text("Vehicle ~g~Repaired");
 			}
 			else
-				set_status_text("Player isn't in a vehicle");
+				set_status_text("~r~Error:~r~ Player isn't in a vehicle");
 		break;
 	case 3: //clean
 		if (bPlayerExists)
@@ -287,11 +296,25 @@ bool onconfirm_veh_menu(MenuItem<int> choice)
 		//	}
 		//}
 		break;
+	case 5: //tele to near car
+		if (bPlayerExists)
+		{
+			Vector3 playerPOS = ENTITY::GET_ENTITY_COORDS(playerPed, 1);
+			int vehID = VEHICLE::GET_CLOSEST_VEHICLE(playerPOS.x, playerPOS.y, playerPOS.z, 1000, 0, 71);
+			PED::SET_PED_INTO_VEHICLE(playerPed, vehID, -1);
+		}
+	case 6: //flip car upright
+		if (bPlayerExists)
+			if (PED::IS_PED_IN_ANY_VEHICLE(playerPed, 0))
+				VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(PED::GET_VEHICLE_PED_IS_USING(playerPed));
+			else
+				set_status_text("~r~Error:~r~Player isn't in a vehicle");
+		break;
 
-	case 10:
+	case 15:
 		if (process_vehmod_menu()) return false;
 		break;
-	case 11:
+	case 16:
 		if (process_veh_door_menu()) return false;
 		break;
 		// switchable features
@@ -303,21 +326,26 @@ bool onconfirm_veh_menu(MenuItem<int> choice)
 
 void process_veh_menu()
 {
-	const int lineCount = 12;
+	const int lineCount = 17; //number of options - add to it for more options
 
 	std::string caption = "Vehicle Options";
 
 	StandardOrToggleMenuDef lines[lineCount] = {
-		{ "Vehicle Spawner", NULL, NULL, false },
+		{ "Vehicle Spawner", NULL, NULL, false }, //submenu = false + 2 nulls
 		{ "Saved Vehicles", NULL, NULL, false },
-		{ "Fix", NULL, NULL, true },
+		{ "Fix", NULL, NULL, true }, //non-submenu = true
 		{ "Clean", NULL, NULL, true },
 		{ "Paint Menu", NULL, NULL, false },
+		{ "Teleport to nearest Vehicle", NULL, NULL, true },
+		{ "Flip car upright", NULL, NULL, true },
 		{ "Invincible", &featureVehInvincible, &featureVehInvincibleUpdated, true },
 		{ "No Falling Off/Out", &featureNoVehFallOff, &featureNoVehFallOffUpdated, true },
 		{ "Don't Wear Helmet", &featureWearHelmetOff, &featureWearHelmetOffUpdated, true },
 		{ "Spawn Into Vehicle", &featureVehSpawnInto, NULL, true },
 		{ "Speed Boost", &featureVehSpeedBoost, NULL, true },
+		{ "Drift Mode", &featureDriftMode, &featureDriftModeUpdated, true },
+		{ "Super Grip", &featureSuperGrip, &featureSuperGripUpdated, true },
+		{ "No Collide", &featureNoVehicleCollision, &featureNoVehFallOffUpdated, true },
 		{ "Modifications", NULL, NULL, false },
 		{ "Door Control", NULL, NULL, false }
 	};
@@ -327,7 +355,7 @@ void process_veh_menu()
 void update_vehicle_features(BOOL bPlayerExists, Ped playerPed)
 {
 	// player's vehicle invincible
-	if (featureVehInvincibleUpdated)
+	if (featureVehInvincibleUpdated) // off state
 	{
 		if (bPlayerExists && !featureVehInvincible && PED::IS_PED_IN_ANY_VEHICLE(playerPed, 0))
 		{
@@ -344,7 +372,7 @@ void update_vehicle_features(BOOL bPlayerExists, Ped playerPed)
 		}
 	}
 
-	if (featureVehInvincible)
+	if (featureVehInvincible) // on state
 	{
 		if (bPlayerExists && PED::IS_PED_IN_ANY_VEHICLE(playerPed, 0))
 		{
@@ -380,13 +408,13 @@ void update_vehicle_features(BOOL bPlayerExists, Ped playerPed)
 	}
 
 	// fall off
-	if (bPlayerExists && featureNoVehFallOffUpdated && !featureNoVehFallOff)
+	if (bPlayerExists && featureNoVehFallOffUpdated && !featureNoVehFallOff) //off state
 	{
 		PED::SET_PED_CONFIG_FLAG(playerPed, PED_FLAG_THROUGH_WINDSCREEN, TRUE);
 		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(playerPed, 0);
 		featureNoVehFallOffUpdated = false;
 	}
-	else if (bPlayerExists && featureNoVehFallOff)
+	else if (bPlayerExists && featureNoVehFallOff) //on state
 	{
 		PED::SET_PED_CONFIG_FLAG(playerPed, PED_FLAG_THROUGH_WINDSCREEN, FALSE);
 		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(playerPed, 1);
@@ -415,6 +443,46 @@ void update_vehicle_features(BOOL bPlayerExists, Ped playerPed)
 		}
 	}
 
+	//Drift Mode
+	if (bPlayerExists &&featureDriftModeUpdated && !featureDriftMode && PED::IS_PED_IN_ANY_VEHICLE(playerPed, 0)) //off state
+	{
+		Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(playerPed);
+		VEHICLE::SET_VEHICLE_REDUCE_GRIP(veh, 0);
+		featureDriftModeUpdated = false;
+	}
+	else if (bPlayerExists && featureDriftMode) //on state
+	{
+		Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(playerPed);
+		VEHICLE::SET_VEHICLE_REDUCE_GRIP(veh, 1);
+	}
+
+
+	//Super Grip
+	if (bPlayerExists &&featureSuperGripUpdated && !featureSuperGrip && PED::IS_PED_IN_ANY_VEHICLE(playerPed, 0)) //off state
+	{
+		//Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(playerPed);
+		//VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh);
+		featureSuperGripUpdated = false;
+	}
+	else if (bPlayerExists && featureSuperGrip) //on state
+	{
+		Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(playerPed);
+		VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh);
+	}
+
+	//No collide
+	if (bPlayerExists &&featureNoVehicleCollisionUpdated && !featureNoVehicleCollision && PED::IS_PED_IN_ANY_VEHICLE(playerPed, 0)) //off state
+	{
+		Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(playerPed);
+		ENTITY::SET_ENTITY_COLLISION(veh, 1, 1);
+		featureNoVehicleCollisionUpdated = false;
+	}
+	else if (bPlayerExists && featureNoVehicleCollision) //on state
+	{
+		Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(playerPed);
+		ENTITY::SET_ENTITY_COLLISION(veh, 0, 1);
+	}
+
 	//Prevents player from wearing a helmet
 	if (bPlayerExists && featureWearHelmetOffUpdated)
 	{
@@ -436,9 +504,13 @@ void reset_vehicle_globals()
 		featureVehicleDoorInstant =
 		featureVehSpawnInto =
 		featureNoVehFallOff =
+		featureDriftMode = 
+		featureNoVehicleCollision =
 		featureWearHelmetOff =
 		featureWearHelmetOff = false;
 
+	featureNoVehicleCollisionUpdated =
+		featureDriftModeUpdated =
 	featureNoVehFallOffUpdated =
 		featureWearHelmetOffUpdated =
 	featureVehInvincibleUpdated =

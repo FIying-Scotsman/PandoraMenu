@@ -65,9 +65,14 @@ bool featureWantedLevelFrozen			=	false;
 bool featureWantedLevelFrozenUpdated	=	false;
 int  frozenWantedLevel					=	0;
 
-bool featureBlockInputInMenu = true;
+bool featurePlayerNoRagdoll = false;
+bool featurePlayerNoRagdollUpdated = false;
+
+bool featureBlockInputInMenu = false; //true
 bool featureVehInvulnIncludesCosmetic = true;
 bool featurePlayerResetOnDeath = true;
+
+
 
 // player model control, switching on normal ped model when needed	
 
@@ -115,7 +120,7 @@ void check_player_model()
 }
 
 // Updates all features that can be turned off by the game, being called each game frame
-void update_features()
+void update_features() //will cause flicker online
 {
 	everInitialised = true;
 	game_frame_num++;
@@ -178,12 +183,14 @@ void update_features()
 	{
 		if (bPlayerExists && !featurePlayerInvincible)
 			PLAYER::SET_PLAYER_INVINCIBLE(player, FALSE);
+			ENTITY::SET_ENTITY_PROOFS(playerPed, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
 		featurePlayerInvincibleUpdated = false;
 	}
 	if (featurePlayerInvincible)
 	{
 		if (bPlayerExists)
 			PLAYER::SET_PLAYER_INVINCIBLE(player, TRUE);
+		    ENTITY::SET_ENTITY_PROOFS(playerPed, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE);
 	}
 
 	
@@ -340,6 +347,23 @@ void update_features()
 		else if (bPlayerExists){ ENTITY::SET_ENTITY_VISIBLE(playerPed, true); }
 	}
 
+	// player no ragdoll
+	if (featurePlayerNoRagdollUpdated) //off state
+	{
+		if (bPlayerExists && !featurePlayerNoRagdoll)
+			PED::SET_PED_CAN_RAGDOLL(playerPed, 1);
+		    PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(playerPed, 1);
+
+		featurePlayerNoRagdollUpdated = false;
+	}
+	if (featurePlayerNoRagdoll) //on state
+	{
+		if (bPlayerExists)
+			PED::SET_PED_CAN_RAGDOLL(playerPed, 0);
+		    PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(playerPed, 0);
+	}
+
+	//Drunk mode
 	if (featurePlayerDrunkUpdated)
 	{
 		featurePlayerDrunkUpdated = false;
@@ -361,6 +385,7 @@ void update_features()
 		AUDIO::SET_PED_IS_DRUNK(playerPed, featurePlayerDrunk);
 	}
 
+	//no Radio
 	if (featureRadioAlwaysOff || featurePlayerRadioUpdated)
 	{
 		if (featureRadioAlwaysOff)
@@ -479,7 +504,7 @@ bool onconfirm_player_menu(MenuItem<int> choice)
 
 void process_player_menu()
 {
-	const int lineCount = 17;
+	const int lineCount = 18;
 	
 	std::string caption = "Player Options";
 
@@ -488,19 +513,20 @@ void process_player_menu()
 		{"Heal Player", NULL, NULL, true},
 		{"Add Cash", NULL, NULL, true, CASH},
 		{"Wanted Level", NULL, NULL, true, WANTED},
-		{ "Freeze Wanted Level", &featureWantedLevelFrozen, &featureWantedLevelFrozenUpdated, true },
-		{ "Never Wanted", &featurePlayerNeverWanted, &featurePlayerNeverWantedUpdated, true },
+		{"Freeze Wanted Level", &featureWantedLevelFrozen, &featureWantedLevelFrozenUpdated, true },
+		{"Never Wanted", &featurePlayerNeverWanted, &featurePlayerNeverWantedUpdated, true },
 		{"Invincible", &featurePlayerInvincible, &featurePlayerInvincibleUpdated, true},
 		{"Police Ignore You", &featurePlayerIgnoredByPolice, &featurePlayerIgnoredByPoliceUpdated, true },
-		{ "Everyone Ignores You", &featurePlayerIgnoredByAll, &featurePlayerIgnoredByAllUpdated, true },
+		{"Everyone Ignores You", &featurePlayerIgnoredByAll, &featurePlayerIgnoredByAllUpdated, true },
 		{"Unlimited Ability", &featurePlayerUnlimitedAbility, NULL, true},
 		{"Noiseless", &featurePlayerNoNoise, &featurePlayerNoNoiseUpdated, true},
 		{"Fast Swim", &featurePlayerFastSwim, &featurePlayerFastSwimUpdated, true},
 		{"Fast Run", &featurePlayerFastRun, &featurePlayerFastRunUpdated, true},
 		{"Super Jump", &featurePlayerSuperJump, NULL, true},
 		{"Invisibility", &featurePlayerInvisible, &featurePlayerInvisibleUpdated, true},
-		{ "Drunk", &featurePlayerDrunk, &featurePlayerDrunkUpdated, true },
-		{ "Anims", NULL, NULL, false }
+		{"No Ragdoll", &featurePlayerNoRagdoll, &featurePlayerNoRagdollUpdated, true },
+		{"Drunk", &featurePlayerDrunk, &featurePlayerDrunkUpdated, true },
+		{"Anims", NULL, NULL, false }
 	};
 
 	draw_menu_from_struct_def(lines, lineCount, &activeLineIndexPlayer, caption, onconfirm_player_menu);
@@ -608,7 +634,7 @@ bool onconfirm_main_menu(MenuItem<int> choice)
 void process_main_menu()
 {
 	std::ostringstream captionSS;
-	captionSS << "~HUD_COLOUR_MENU_PURPLE~Pandora ~HUD_COLOUR_GREY~ Game Ver.:"; //captionSS << "~HUD_COLOUR_MENU_YELLOW~Enhanced ~HUD_COLOUR_WHITE~Native Trainer ~HUD_COLOUR_GREY~Update ";
+	captionSS << "~HUD_COLOUR_MENU_YELLOW~Pandora Menu ~HUD_COLOUR_GOLD~Update "; //captionSS << "~HUD_COLOUR_MENU_YELLOW~Enhanced ~HUD_COLOUR_WHITE~Native Trainer ~HUD_COLOUR_GREY~Update ";
 	captionSS << VERSION_STRING;
 
 	std::vector<std::string> TOP_OPTIONS = {
@@ -655,38 +681,40 @@ void reset_globals()
 
 	featurePlayerInvincible			=
 	featurePlayerNeverWanted		=
-	featurePlayerIgnoredByPolice			=
-	featurePlayerIgnoredByAll =
+	featurePlayerIgnoredByPolice	=
+	featurePlayerIgnoredByAll		=
 	featurePlayerUnlimitedAbility	=
 	featurePlayerNoNoise			=
 	featurePlayerFastSwim			=
 	featurePlayerFastRun			=
 	featurePlayerSuperJump			=
 	featurePlayerInvisible			=
-	featurePlayerDrunk =
+	featurePlayerDrunk				=
 	featurePlayerRadio				=
-	featureRadioAlwaysOff =
+	featureRadioAlwaysOff		    =
 	featureMiscLockRadio			=
 	featureMiscHideHud				=	
-	featureWantedLevelFrozen		=	false;
+	featurePlayerNoRagdoll			=
+	featureWantedLevelFrozen		= false;
 
-	featurePlayerResetOnDeath = true;
-	featureBlockInputInMenu = true;
+	featurePlayerResetOnDeath		= true;
+	featureBlockInputInMenu			= false; //true
 	featureVehInvulnIncludesCosmetic = true;
 
-	featurePlayerInvincibleUpdated =
-	featurePlayerNeverWantedUpdated =
+	featurePlayerInvincibleUpdated		=
+	featurePlayerNeverWantedUpdated		=
 	featurePlayerIgnoredByPoliceUpdated =
-	featurePlayerIgnoredByAllUpdated =
-	featurePlayerNoNoiseUpdated =
-	featurePlayerFastSwimUpdated =
-	featurePlayerFastRunUpdated =
-	featureRadioAlwaysOffUpdated =
-	featurePlayerRadioUpdated =
-	featurePlayerDrunkUpdated =
-	featurePlayerInvisibleUpdated = true;
+	featurePlayerIgnoredByAllUpdated	=
+	featurePlayerNoNoiseUpdated			=
+	featurePlayerFastSwimUpdated		=
+	featurePlayerFastRunUpdated			=
+	featureRadioAlwaysOffUpdated		=
+	featurePlayerRadioUpdated			=
+	featurePlayerDrunkUpdated			=
+	featurePlayerNoRagdollUpdated		=
+	featurePlayerInvisibleUpdated		= true;
 
-	set_status_text("Reset All Settings");
+	set_status_text("~g~Reset All Settings");
 
 	DWORD myThreadID;
 	HANDLE myHandle = CreateThread(0, 0, save_settings_thread, 0, 0, &myThreadID);
@@ -904,6 +932,7 @@ std::vector<FeatureEnabledLocalDefinition> get_feature_enablements()
 	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerFastRun", &featurePlayerFastRun, &featurePlayerFastRunUpdated });
 	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerSuperJump", &featurePlayerSuperJump });
 	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerInvisible", &featurePlayerInvisible, &featurePlayerInvisibleUpdated });
+	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerNoRagdoll", &featurePlayerNoRagdoll , &featurePlayerNoRagdollUpdated });
 	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerDrunk", &featurePlayerDrunk, &featurePlayerDrunkUpdated });
 	results.push_back(FeatureEnabledLocalDefinition{ "featurePlayerRadio", &featurePlayerRadio, &featurePlayerRadioUpdated });
 	results.push_back(FeatureEnabledLocalDefinition{ "featureRadioAlwaysOff", &featureRadioAlwaysOff, &featureRadioAlwaysOffUpdated });

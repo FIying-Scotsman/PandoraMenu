@@ -315,7 +315,7 @@ bool onconfirm_vehmod_category_menu(MenuItem<int> choice)
 
 	if (!PED::IS_PED_IN_ANY_VEHICLE(playerPed, 0))
 	{
-		set_status_text("Player isn't in a vehicle");
+		set_status_text("~r~Error: ~r~ Player isn't in a vehicle!");
 		return false;
 	}
 
@@ -895,7 +895,7 @@ bool process_vehmod_menu()
 	return false;
 }
 
-void set_plate_text(MenuItem<int> choice)
+void set_plate_text(MenuItem<int> choice) //custom input
 {
 	Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID());
 	char* existingText = VEHICLE::GET_VEHICLE_NUMBER_PLATE_TEXT(veh);

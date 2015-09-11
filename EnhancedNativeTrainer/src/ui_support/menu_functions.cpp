@@ -77,7 +77,7 @@ void draw_menu_line(std::string caption, float lineWidth, float lineHeight, floa
 		rect_col[3] = 200.0f;
 
 		if (rescaleText) text_scale = 0.60;
-		font = 2;
+		font = 1; //2
 	}
 	else
 	{
