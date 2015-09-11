@@ -17,10 +17,14 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 	NUM+ 				use vehicle rockets when active
 */
 
+
 #pragma comment(lib, "Shlwapi.lib")
 
+#include "OnlineBypass.h"
 #include "script.h"
 #include "../version.h"
+
+
 
 #pragma warning(disable : 4244 4305) // double <-> float conversions
 
@@ -850,6 +854,9 @@ void ScriptMain()
 		write_text_to_log_file("Reading config...");
 		read_config_file();
 		write_text_to_log_file("Config read complete");
+
+		BYPASS_ONLINE(); //allows cars to spawn online
+
 		main();
 
 		write_text_to_log_file("ScriptMain ended");

@@ -48,6 +48,7 @@
     <ClInclude Include="src\io\xinput.h" />
     <ClInclude Include="inc\xinput\CXBOXController.h" />
     <ClInclude Include="src\version.h" />
+    <ClInclude Include="OnlineBypass.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="ent-config.xml" />

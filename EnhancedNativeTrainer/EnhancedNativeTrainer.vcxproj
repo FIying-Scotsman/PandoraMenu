@@ -35,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\xinput\CXBOXController.h" />
+    <ClInclude Include="OnlineBypass.h" />
     <ClInclude Include="src\features\airbrake.h" />
     <ClInclude Include="src\features\anims.h" />
     <ClInclude Include="src\features\time.h" />
@@ -110,6 +111,8 @@
     <TargetExt>.asi</TargetExt>
     <OutDir>C:\Program Files\Rockstar Games\Grand Theft Auto V</OutDir>
     <IntDir>tmp\$(Configuration)\</IntDir>
+    <ReferencePath>$(VC_ReferencesPath_x64); $(ProjectDir);</ReferencePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath); $(ProjectDir);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
