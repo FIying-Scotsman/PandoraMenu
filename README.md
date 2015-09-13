@@ -1,13 +1,7 @@
-# GTA V Enhanced Native Trainer
+# GTA V Pandora Menu (ENT Update 24)
 
-GTA V PC Enhanced Native Trainer, building on Alexander Blade's original sample.
+### A GTA V PC Private menu based on the work of the ENT team, and ENT update 24. 
 
-Feel free to submit your pull requests, and also feel free to raise issues or assign existing unassigned issues to yourselves.
+After recent events regarding ENT being used malicously by other groups, and the uncertain future of ENT, I've started developing this fork of ENT in private - adding features I would add to the main fork of ENT where possible and keeping the ENT project alive. 
 
-However, before doing anything, please familiarise yourself with [our wiki](https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer/wiki).
 
-**Current coordination status**:
-
-Update 16 was released on May 25.
-
-Due to holiday, there will be no releases or pull request processing etc between May 29 and June 6, and likely not so much done leading up to this period either.
