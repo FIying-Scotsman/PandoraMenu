@@ -3516,7 +3516,7 @@ namespace GRAPHICS
 	static void SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(Any* scaleformPtr) { invoke<Void>(0x1D132D614DD86811, scaleformPtr); } // 0x1D132D614DD86811 0x5FED3BA1
 	static void _0x6D8EB211944DCE08(Any p0, BOOL p1) { invoke<Void>(0x6D8EB211944DCE08, p0, p1); } // 0x6D8EB211944DCE08 0x18C9DE8D
 	static void DRAW_SCALEFORM_MOVIE(Any X, Any Y, float Width, float Height, float Heading, int R, int G, int B, int A) { invoke<Void>(0x54972ADAF0294A93, X, Y, Width, Height, Heading, R, G, B, A); } // 0x54972ADAF0294A93 0x48DA6A58
-	static void _0x0DF606929C105BE1(Any p0, Any p1, Any p2, Any p3, Any p4) { invoke<Void>(0x0DF606929C105BE1, p0, p1, p2, p3, p4); } // 0x0DF606929C105BE1 0x7B48E696
+	static void _PUSH_SCALEFORM_MOVIE_RGBA(Any scaleform, int r, int g, int b, int a) { invoke<Void>(0x0DF606929C105BE1,scaleform, r, g, b, a); } // 0x0DF606929C105BE1 0x7B48E696
 	static void _0xCF537FDE4FBD4CE5(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { invoke<Void>(0xCF537FDE4FBD4CE5, p0, p1, p2, p3, p4, p5); } // 0xCF537FDE4FBD4CE5 0x9C59FC06
 	static void _0x87D51D72255D4E78(Any p0, float p1, float p2, float p3, float p4, float p5, float p6, float p7, float p8, float p9, float p10, float p11, float p12, Any p13) { invoke<Void>(0x87D51D72255D4E78, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13); } // 0x87D51D72255D4E78 0xC4F63A89
 	static void _0x1CE592FDC749D6F5(Any p0, float p1, float p2, float p3, float p4, float p5, float p6, float p7, float p8, float p9, float p10, float p11, float p12, Any p13) { invoke<Void>(0x1CE592FDC749D6F5, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13); } // 0x1CE592FDC749D6F5 0x899933C8
@@ -3525,15 +3525,15 @@ namespace GRAPHICS
 	static void _0x51BC1ED3CC44E8F7(Any p0, Any* p1, Any* p2, Any* p3, Any* p4, Any* p5, Any* p6) { invoke<Void>(0x51BC1ED3CC44E8F7, p0, p1, p2, p3, p4, p5, p6); } // 0x51BC1ED3CC44E8F7 0x91A7FCEB
 	static void _0xEF662D8D57E290B1(Any p0, Any* p1, float p2, float p3, float p4, float p5, float p6, Any* p7, Any* p8, Any* p9, Any* p10, Any* p11) { invoke<Void>(0xEF662D8D57E290B1, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); } // 0xEF662D8D57E290B1 0x6EAF56DE
 	static BOOL _0x98C494FD5BDFBFD5(Any p0, Any* p1) { return invoke<BOOL>(0x98C494FD5BDFBFD5, p0, p1); } // 0x98C494FD5BDFBFD5 0x5D66CE1E
-	static BOOL _0xF6E48914C7A8694E(Any scaleform, char* p1) { return invoke<BOOL>(0xF6E48914C7A8694E, scaleform, p1); } // 0xF6E48914C7A8694E 0x215ABBE8
+	static BOOL _PUSH_SCALEFORM_MOVIE_FUNCTION(Any scaleform, char *p1) { return invoke<BOOL>(0xF6E48914C7A8694E, scaleform, p1); } // 0xF6E48914C7A8694E 0x215ABBE8
 	static BOOL _0xAB58C27C2E6123C6(char* p0) { return invoke<BOOL>(0xAB58C27C2E6123C6, p0); } // 0xAB58C27C2E6123C6 0xF6015178
 	static BOOL _0xB9449845F73F5E9C(Any* p0) { return invoke<BOOL>(0xB9449845F73F5E9C, p0); } // 0xB9449845F73F5E9C 0x5E219B67
-	static void _0xC6796A8FFA375E53() { invoke<Void>(0xC6796A8FFA375E53); } // 0xC6796A8FFA375E53 0x02DBF2D7
+	static void _POP_SCALEFORM_MOVIE_FUNCTION_VOID() { invoke<Void>(0xC6796A8FFA375E53); } // 0xC6796A8FFA375E53 0x02DBF2D7
 	static Any _0xC50AA39A577AF886() { return invoke<Any>(0xC50AA39A577AF886); } // 0xC50AA39A577AF886 0x2F38B526
 	static BOOL _0x768FF8961BA904D6(Any p0) { return invoke<BOOL>(0x768FF8961BA904D6, p0); } // 0x768FF8961BA904D6 0x5CD7C3C0
 	static Any _0x2DE7EFA66B906036(Any p0) { return invoke<Any>(0x2DE7EFA66B906036, p0); } // 0x2DE7EFA66B906036 0x2CFB0E6D
 	static Any SITTING_TV(Any p0) { return invoke<Any>(0xE1E258829A885245, p0); } // 0xE1E258829A885245 0x516862EB
-	static void _0xC3D0841A0CC546A6(Any p0) { invoke<Void>(0xC3D0841A0CC546A6, p0); } // 0xC3D0841A0CC546A6 0x716777CB
+	static void _PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(int p0) { invoke<Void>(0xC3D0841A0CC546A6, p0); } // 0xC3D0841A0CC546A6 0x716777CB
 	static void _0xD69736AAE04DB51A(float p0) { invoke<Void>(0xD69736AAE04DB51A, p0); } // 0xD69736AAE04DB51A 0x9A01FFDA
 	static void _0xC58424BA936EB458(BOOL p0) { invoke<Void>(0xC58424BA936EB458, p0); } // 0xC58424BA936EB458 0x0D4AE8CB
 	static void _BEGIN_TEXT_COMPONENT(char* componentType) { invoke<Void>(0x80338406F3475E55, componentType); } // 0x80338406F3475E55 0x3AC9CB55

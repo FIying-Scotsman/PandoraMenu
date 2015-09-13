@@ -11,6 +11,97 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 #include "menu_functions.h"
 #include "..\features\script.h"
 
+/*
+//Corner information - opening binds etc
+
+int mov = GRAPHICS::REQUEST_SCALEFORM_MOVIE("instructional_buttons");
+int instructCount = 0;
+
+
+
+void set_text_component(char *text)
+{
+	GRAPHICS::_BEGIN_TEXT_COMPONENT("STRING");
+	UI::_ADD_TEXT_COMPONENT_STRING(text);
+	GRAPHICS::_END_TEXT_COMPONENT();
+}
+
+void instructionalSetup()
+{
+	instructCount = 0;
+	mov = GRAPHICS::REQUEST_SCALEFORM_MOVIE("instructional_buttons");
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_RGBA(mov, 255, 255, 255, 0);
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "CLEAR_ALL");
+	GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "SET_CLEAR_SPACE");
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(200);
+	GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+}
+void addInstructional(char *text, int button)
+{
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "SET_DATA_SLOT");
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(instructCount);
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(button);
+	set_text_component(text);
+	GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+	instructCount++;
+}
+void instructionalClose()
+{
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "DRAW_INSTRUCTIONAL_BUTTONS");
+	GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "SET_BACKGROUND_COLOUR");
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(0);
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(0);
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(0);
+	GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(80);
+	GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+}
+
+
+void DrawInstructionalComponent()
+{
+int mov = GRAPHICS::REQUEST_SCALEFORM_MOVIE("instructional_buttons");
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_RGBA(mov, 255, 255, 255, 0);
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "CLEAR_ALL");
+GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "SET_CLEAR_SPACE");
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(200);
+GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "SET_DATA_SLOT");
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(0);
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(BUTTON_A);
+set_text_component("Select Option");
+GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "SET_DATA_SLOT");
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(1);
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(BUTTON_B);
+set_text_component("Back");
+GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "SET_DATA_SLOT");
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(2);
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(BUTTON_DPAD_UP_DOWN);
+set_text_component("Scroll");
+GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "DRAW_INSTRUCTIONAL_BUTTONS");
+GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION(mov, "SET_BACKGROUND_COLOUR");
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(0);
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(0);
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(0);
+GRAPHICS::_PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(80);
+GRAPHICS::_POP_SCALEFORM_MOVIE_FUNCTION_VOID();
+}
+
+
+*/
+
+
+//end of corner information
+
+
+
+
 std::string centreScreenStatusText;
 DWORD centreScreenStatusTextDrawTicksMax;
 bool centreScreenStatusTextGxtEntry;
@@ -32,11 +123,18 @@ void make_periodic_feature_call()
 void set_menu_showing(bool showing)
 {
 	menu_showing = showing;
+
+	/*instructionalSetup(); //Buttons at bottom screen
+	addInstructional("Open Category", BUTTON_A);
+	addInstructional("Exit Menu", BUTTON_B);
+	addInstructional("Scroll", BUTTON_DPAD_UP_DOWN);*/
+
 }
 
 bool is_menu_showing()
 {
 	return menu_showing;
+	
 }
 
 void draw_menu_line(std::string caption, float lineWidth, float lineHeight, float lineTop, float lineLeft, float textLeft, bool active, bool title, bool rescaleText)
@@ -251,6 +349,7 @@ void draw_menu_from_struct_def(StringStandardOrToggleMenuDef defs[], int lineCou
 	}
 
 	draw_generic_menu<std::string>(menuItems, selectionRef, caption, onConfirmation, NULL, NULL);
+
 }
 
 std::string show_keyboard(char* title_id, char* prepopulated_text)

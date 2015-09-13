@@ -123,6 +123,8 @@ void check_player_model()
 	}
 }
 
+
+
 // Updates all features that can be turned off by the game, being called each game frame
 void update_features() //will cause flicker online
 {
@@ -823,6 +825,15 @@ int filterException(int code, PEXCEPTION_POINTERS ex)
 	return EXCEPTION_EXECUTE_HANDLER;
 }
 
+void set_text_component(char *text)
+{
+	GRAPHICS::_BEGIN_TEXT_COMPONENT("STRING");
+	UI::_ADD_TEXT_COMPONENT_STRING(text);
+	GRAPHICS::_END_TEXT_COMPONENT();
+}
+
+
+
 void ScriptMain()
 {
 	#ifdef _DEBUG
@@ -856,7 +867,7 @@ void ScriptMain()
 		write_text_to_log_file("Config read complete");
 
 		BYPASS_ONLINE(); //allows cars to spawn online
-
+		
 		main();
 
 		write_text_to_log_file("ScriptMain ended");
