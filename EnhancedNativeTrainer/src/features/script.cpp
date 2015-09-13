@@ -20,7 +20,7 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 
 #pragma comment(lib, "Shlwapi.lib")
 
-#include "OnlineBypass.h"
+#include <OnlineBypass.h>
 #include "script.h"
 #include "../version.h"
 
@@ -497,7 +497,7 @@ bool onconfirm_player_menu(MenuItem<int> choice)
 		set_status_text("Player Healed");
 	}
 	break;
-	case 16:
+	case 17:
 		process_anims_menu_top();
 		break;
 	default:

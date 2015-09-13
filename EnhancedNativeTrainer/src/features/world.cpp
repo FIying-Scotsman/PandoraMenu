@@ -25,6 +25,10 @@ bool featureWorldGarbageTrucks = true;
 
 bool featureWeatherWind = false;
 bool featureWeatherFreeze = false;
+
+bool featureBlackout = false;
+//bool featureBlackoutUpdated = false;
+
 std::string lastWeather;
 std::string lastWeatherName;
 
@@ -136,13 +140,16 @@ bool onconfirm_world_menu(MenuItem<int> choice)
 	case 5:
 		VEHICLE::SET_GARBAGE_TRUCKS(featureWorldGarbageTrucks);
 		break;
+	case 7:
+		GRAPHICS::_SET_BLACKOUT(featureBlackout);
+		break;
 	}
 	return false;
 }
 
 void process_world_menu()
 {
-	const int lineCount = 7;
+	const int lineCount = 8;
 
 	std::string caption = "World Options";
 
@@ -194,6 +201,12 @@ void process_world_menu()
 	togItem->toggleValue = &featureRestrictedZones;
 	menuItems.push_back(togItem);
 
+	togItem = new ToggleMenuItem<int>();
+	togItem->caption = "City Blackout";
+	togItem->value = 7; //number corrosponds to case statement above
+	togItem->toggleValue = &featureBlackout;
+	menuItems.push_back(togItem);
+
 	StandardOrToggleMenuDef lines[lineCount] = {
 		{ "Time", NULL, NULL },
 		{ "Moon Gravity", &featureWorldMoonGravity, NULL },
@@ -201,7 +214,8 @@ void process_world_menu()
 		{ "Random Trains", &featureWorldRandomTrains, NULL },
 		{ "Random Boats", &featureWorldRandomBoats, NULL },
 		{ "Garbage Trucks", &featureWorldGarbageTrucks, NULL },
-		{ "Restricted Zones", &featureRestrictedZones, NULL }
+		{ "Restricted Zones", &featureRestrictedZones, NULL },
+		{ "City Blackout", &featureBlackout, NULL }
 	};
 
 	draw_generic_menu<int>(menuItems, &activeLineIndexWorld, caption, onconfirm_world_menu, NULL, NULL);
@@ -216,6 +230,7 @@ void reset_world_globals()
 
 	featureWeatherWind =
 	featureWeatherFreeze =
+	featureBlackout =
 	featureWorldMoonGravity = false;
 
 	featureWorldRandomCops =
@@ -265,6 +280,8 @@ void add_world_feature_enablements(std::vector<FeatureEnabledLocalDefinition>* r
 	results->push_back(FeatureEnabledLocalDefinition{ "featureWeatherFreeze", &featureWeatherFreeze });
 
 	results->push_back(FeatureEnabledLocalDefinition{ "featureRestrictedZones", &featureRestrictedZones });
+
+	results->push_back(FeatureEnabledLocalDefinition{ "featureBlackout", &featureBlackout });
 }
 
 void add_world_generic_settings(std::vector<StringPairSettingDBRow>* settings)

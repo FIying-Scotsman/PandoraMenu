@@ -3360,7 +3360,7 @@ namespace GRAPHICS
 	static void _0xE2892E7E55D7073A(float p0) { invoke<Void>(0xE2892E7E55D7073A, p0); } // 0xE2892E7E55D7073A 0x455F1084
 	static void SET_FLASH(float p0, float p1, Any p2, Any p3, Any p4) { invoke<Void>(0x0AB84296FED9CFC6, p0, p1, p2, p3, p4); } // 0x0AB84296FED9CFC6 0x7E55A1EE
 	static void _0x3669F1B198DCAA4F() { invoke<Void>(0x3669F1B198DCAA4F); } // 0x3669F1B198DCAA4F 0x0DCC0B8B
-	static void _0x1268615ACE24D504(BOOL p0) { invoke<Void>(0x1268615ACE24D504, p0); } // 0x1268615ACE24D504 0xAA2A0EAF
+	static void _SET_BLACKOUT(BOOL p0) { invoke<Void>(0x1268615ACE24D504, p0); } // 0x1268615ACE24D504 0xAA2A0EAF
 	static Object CREATE_TRACKED_POINT() { return invoke<Object>(0xE2C9439ED45DEA60); } // 0xE2C9439ED45DEA60 0x3129C31A
 	static void SET_TRACKED_POINT_INFO(Object point, float x, float y, float z, float radius) { invoke<Void>(0x164ECBB3CF750CB0, point, x, y, z, radius); } // 0x164ECBB3CF750CB0 0x28689AA4
 	static BOOL IS_TRACKED_POINT_VISIBLE(Any p0) { return invoke<BOOL>(0xC45CCDAAC9221CA8, p0); } // 0xC45CCDAAC9221CA8 0x0BFC4F64
