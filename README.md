@@ -4,4 +4,5 @@
 
 After recent events regarding ENT being used malicously by other groups, and the uncertain future of ENT, I've started developing this fork of ENT in private - adding features I would add to the main fork of ENT where possible and keeping the ENT project alive. 
 
+This fork forms the basis of my private menu, called Pandora after Pandora's Box (different names are welcome). 
 
