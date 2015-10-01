@@ -152,6 +152,8 @@ int lastSelectedWeapon = 0;
 //int lastSelectedIndexInIndivMenu = 0;
 
 bool featureWeaponInfiniteAmmo = false;
+bool featureWeaponInfiniteAmmoUpdated = false;
+
 bool featureWeaponInfiniteParachutes = false;
 bool featureWeaponNoReload = false;
 bool featureWeaponFireAmmo = false;
@@ -487,6 +489,17 @@ void update_weapon_features(BOOL bPlayerExists, Player player)
 	}
 
 	// infinite ammo
+	if (bPlayerExists && featureWeaponInfiniteAmmo && !featureWeaponInfiniteAmmoUpdated) //off state
+	{
+		WEAPON::SET_PED_INFINITE_AMMO_CLIP(playerPed, FALSE);
+		featureWeaponInfiniteAmmoUpdated = false;
+	}
+	else if (bPlayerExists && featureWeaponInfiniteAmmoUpdated) //on state
+	{
+		WEAPON::SET_PED_INFINITE_AMMO_CLIP(playerPed, TRUE);
+	}
+
+	/*
 	if (bPlayerExists && featureWeaponInfiniteAmmo)
 	{
 		for (int i = 0; i < sizeof(VOV_WEAPON_VALUES) / sizeof(VOV_WEAPON_VALUES[0]); i++)
@@ -507,7 +520,7 @@ void update_weapon_features(BOOL bPlayerExists, Player player)
 				}
 			}
 		}
-	}
+	}*/
 
 	// infinite parachutes
 	if (bPlayerExists && featureWeaponInfiniteParachutes)
@@ -774,7 +787,7 @@ void give_weapon_clip(MenuItem<int> choice)
 
 	if (curClipAmmo < maxClipAmmo)
 	{
-		set_status_text("Clip Filled");
+		set_status_text("~g~Clip Filled");
 		WEAPON::SET_AMMO_IN_CLIP(playerPed, weapHash, maxClipAmmo);
 	}
 	else

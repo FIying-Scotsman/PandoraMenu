@@ -20,7 +20,7 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 
 #pragma comment(lib, "Shlwapi.lib")
 
-#include <OnlineBypass.h>
+//#include "../OnlineBypass.h"
 #include "script.h"
 #include "../version.h"
 
@@ -111,7 +111,7 @@ void check_player_model()
 
 		if (!found)
 		{
-			set_status_text("Resetting player model");
+			set_status_text("~r~Resetting player model");
 			applyChosenSkin("player_zero");
 		}
 
@@ -176,6 +176,8 @@ void update_features() //will cause flicker online
 	update_world_features();
 
 	check_player_model();
+
+	//draw_instructional_buttons(); //instructional buttons
 
 	// common variables
 	Player player = PLAYER::PLAYER_ID();
@@ -866,7 +868,7 @@ void ScriptMain()
 		read_config_file();
 		write_text_to_log_file("Config read complete");
 
-		BYPASS_ONLINE(); //allows cars to spawn online
+		//BYPASS_ONLINE(); //allows cars to spawn online
 		
 		main();
 

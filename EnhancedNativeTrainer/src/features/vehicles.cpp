@@ -1,3 +1,4 @@
+
 /*
 Some of this code began its life as a part of GTA V SCRIPT HOOK SDK.
 http://dev-c.com
@@ -335,7 +336,7 @@ void process_veh_menu()
 		{ "Saved Vehicles", NULL, NULL, false },
 		{ "Fix", NULL, NULL, true }, //non-submenu = true
 		{ "Clean", NULL, NULL, true },
-		{ "Paint Menu", NULL, NULL, false },
+		{ "~o~Paint Menu", NULL, NULL, false },
 		{ "Teleport to nearest Vehicle", NULL, NULL, true },
 		{ "Flip car upright", NULL, NULL, true },
 		{ "Invincible", &featureVehInvincible, &featureVehInvincibleUpdated, true },
