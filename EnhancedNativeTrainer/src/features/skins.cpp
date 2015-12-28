@@ -125,7 +125,7 @@ bool applyChosenSkin(DWORD model)
 	return false;
 }
 
-std::string getSkinDetailAttribDescription(int i)
+std::string getSkinDetailAttribDescription(int i) //this is a datatype for ENT. This is how it 'draws' menus. Not really needed for the understanding part
 {
 	switch (i)
 	{
@@ -156,7 +156,7 @@ std::string getSkinDetailAttribDescription(int i)
 	}
 }
 
-std::string getPropDetailAttribDescription(int i)
+std::string getPropDetailAttribDescription(int i) //likewise
 {
 	switch (i)
 	{
@@ -195,7 +195,7 @@ std::string getPropDetailAttribDescription(int i)
 * =================
 */
 
-void onhighlight_skinchanger_texture_menu(MenuItem<int> choice)
+void onhighlight_skinchanger_texture_menu(MenuItem<int> choice) //this gives you a 'preview' of the skin before you select it
 {
 	if (true)//PED::IS_PED_COMPONENT_VARIATION_VALID(PLAYER::PLAYER_PED_ID(), skinDetailMenuValue, skinDrawableMenuValue, value))
 	{
@@ -205,7 +205,7 @@ void onhighlight_skinchanger_texture_menu(MenuItem<int> choice)
 	WAIT(100);
 }
 
-bool onconfirm_skinchanger_texture_menu(MenuItem<int> choice)
+bool onconfirm_skinchanger_texture_menu(MenuItem<int> choice) //sets the texture/componnent if you selected it
 {
 	onhighlight_skinchanger_texture_menu(choice);
 
@@ -233,11 +233,11 @@ void onexit_skinchanger_texture_menu(bool returnValue)
 	*/
 }
 
-bool process_skinchanger_texture_menu(std::string caption)
+bool process_skinchanger_texture_menu(std::string caption) //populates list of textures
 {
 	DWORD waitTime = 150;
 	int foundTextures = 0;
-	std::vector<MenuItem<int>*> menuItems;
+	std::vector<MenuItem<int>*> menuItems; //ENT menu draw related, not needed
 
 	Ped playerPed = PLAYER::PLAYER_PED_ID();
 	Hash model = ENTITY::GET_ENTITY_MODEL(playerPed);
@@ -360,7 +360,7 @@ bool onconfirm_skinchanger_detail_menu(MenuItem<int> choice)
 	return process_skinchanger_drawable_menu(choice.caption, choice.value);
 }
 
-bool process_skinchanger_detail_menu()
+bool process_skinchanger_detail_menu() //this is probably what you want
 {
 	DWORD waitTime = 150;
 	int foundTextures = 0;
@@ -379,12 +379,12 @@ bool process_skinchanger_detail_menu()
 		STREAMING::REQUEST_MODEL(model);
 		while (!STREAMING::HAS_MODEL_LOADED(model))	WAIT(0);
 
-		for (; i < partVariations + fixedChoices; i++)
+		for (; i < partVariations + fixedChoices; i++) //the ; in the for statement basically means infinity 
 		{
 			bool iFound = false;
 			int compIndex = i - fixedChoices;
 
-			int drawables = PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(PLAYER::PLAYER_PED_ID(), compIndex);
+			int drawables = PED::GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS(PLAYER::PLAYER_PED_ID(), compIndex); //
 			int textures = 0;
 			if (drawables == 1)
 			{

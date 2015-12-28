@@ -81,7 +81,7 @@ std::string getModCategoryName(int i)
 	case 16:
 		return "Armor";
 	case 22:
-		return "Headlights";
+		return "Interior"; //returning bobbleheads on Btype2
 	case SPECIAL_ID_FOR_WHEEL_CATEGORY:
 		return "Wheel Category";
 	case SPECIAL_ID_FOR_WHEEL_SELECTION:
@@ -153,6 +153,17 @@ std::string getHornTitle(int index)
 	case 29: v_3 = "HORN_INDI_2"; break;
 	case 30: v_3 = "HORN_INDI_3"; break;
 	case 31: v_3 = "HORN_INDI_4"; break;
+		//added new horns after this comment
+	case 32: v_3 = "LUXE_HORN_1"; break;
+	case 33: v_3 = "LUXE_HORN_2"; break;
+	case 34: v_3 = "LUXE_HORN_3"; break;
+	case 35: v_3 = "ORGAN_HORN_LOOP_01"; break;
+	case 36: v_3 = "ORGAN_HORN_LOOP_02"; break;
+	case 37: v_3 = "LOWRIDER_HORN_1"; break;
+	case 38: v_3 = "LOWRIDER_HORN_2"; break;
+	case 39: v_3 = "XM15_HORN_01"; break;
+	case 40: v_3 = "XM15_HORN_02"; break;
+	case 41: v_3 = "XM15_HORN_03"; break;
 	}
 
 	if (v_3 == NULL)
@@ -209,6 +220,8 @@ int getHornDuration(int index)
 	case 6: v_D = 4500; break;
 	case 7: v_D = 4500; break;
 	case 8: v_D = 4500; break;
+	case 32: v_D = 1000; break;
+	case 33: v_D = 1000; break;
 	default: v_D = 1000; break;
 	}
 
@@ -226,7 +239,7 @@ std::string getNormalItemTitle(Vehicle veh, int category, int index)
 	
 	if (index == -1)
 	{
-		if (category == 16)
+		if (category == 16) //For some reason, it's confusing this with bobbleheads for the btype2.
 		{
 			modItemNameStr = "No Armor";
 		}
@@ -273,6 +286,12 @@ std::string getNormalItemTitle(Vehicle veh, int category, int index)
 		ss << ((index + 1) * 20) << "% Armor";
 		modItemNameStr = ss.str();
 	}
+	/*else if (category == 28)//Interior keeps saying "28" 
+	{
+		std::ostringstream ss;
+		set_status_text("Interior called!");
+		
+	}*/
 	else
 	{
 		char* modItemNameChr = VEHICLE::GET_MOD_TEXT_LABEL(veh, category, index);
@@ -339,6 +358,7 @@ bool onconfirm_vehmod_category_menu(MenuItem<int> choice)
 	case 14:
 	case 15:
 	case 16:
+	case 28:
 	case 21:
 	case 22:
 	case 23:

@@ -6,4 +6,4 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 
 #include <string>
 
-const std::string VERSION_STRING = "~HUD_COLOUR_MENU_GREY_LIGHT~1 28"; //24
+const std::string VERSION_STRING = "~HUD_COLOUR_MENU_GREY_LIGHT~1 31"; //24

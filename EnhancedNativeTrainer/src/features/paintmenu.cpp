@@ -99,7 +99,7 @@ bool process_paint_menu_liveries()
 
 	if (!PED::IS_PED_IN_ANY_VEHICLE(playerPed, 0))
 	{
-		set_status_text("Player isn't in a vehicle");
+		set_status_text("~r~Error:~r~ Player isn't in a vehicle");
 		return false;
 	}
 
@@ -108,7 +108,7 @@ bool process_paint_menu_liveries()
 	int count = VEHICLE::GET_VEHICLE_LIVERY_COUNT(veh);
 	if (count <= 1)
 	{
-		set_status_text("No liveries for this vehicle");
+		set_status_text("~r~Error:~r~ No liveries for this vehicle");
 	}
 
 	std::vector<MenuItem<int>*> menuItems;
@@ -237,7 +237,7 @@ bool process_paint_menu()
 		menuItems.push_back(item);
 	}
 
-	if (liveryCount > 1)
+	if (liveryCount >= 1)
 	{
 		std::ostringstream ss;
 		ss << "Liveries (" << liveryCount << ")";
@@ -246,6 +246,7 @@ bool process_paint_menu()
 		item->value = -1;
 		item->isLeaf = false;
 		menuItems.push_back(item);
+		
 	}
 
 	return draw_generic_menu<int>(menuItems, 0, "Choose which part to paint", onconfirm_paint_menu, NULL, NULL, vehicle_menu_interrupt);
