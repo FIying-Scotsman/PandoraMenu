@@ -1,3 +1,4 @@
+
 #pragma once
 
 // Generated 18 May 2015
@@ -3520,7 +3521,7 @@ namespace GRAPHICS
 	static void _0xCF537FDE4FBD4CE5(Any p0, Any p1, Any p2, Any p3, Any p4, Any p5) { invoke<Void>(0xCF537FDE4FBD4CE5, p0, p1, p2, p3, p4, p5); } // 0xCF537FDE4FBD4CE5 0x9C59FC06
 	static void _0x87D51D72255D4E78(Any p0, float p1, float p2, float p3, float p4, float p5, float p6, float p7, float p8, float p9, float p10, float p11, float p12, Any p13) { invoke<Void>(0x87D51D72255D4E78, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13); } // 0x87D51D72255D4E78 0xC4F63A89
 	static void _0x1CE592FDC749D6F5(Any p0, float p1, float p2, float p3, float p4, float p5, float p6, float p7, float p8, float p9, float p10, float p11, float p12, Any p13) { invoke<Void>(0x1CE592FDC749D6F5, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13); } // 0x1CE592FDC749D6F5 0x899933C8
-	static void _0xFBD96D87AC96D533(Any p0, Any* p1) { invoke<Void>(0xFBD96D87AC96D533, p0, p1); } // 0xFBD96D87AC96D533 0x7AB77B57
+	static void _CALL_SCALEFORM_MOVIE_FUNCTION_VOID(int scaleform, char *functionName) { invoke<Void>(0xFBD96D87AC96D533, scaleform, functionName); } // 0xFBD96D87AC96D533 0x7AB77B57
 	static void _0xD0837058AE2E4BEE(Any p0, Any* p1, float p2, float p3, float p4, float p5, float p6) { invoke<Void>(0xD0837058AE2E4BEE, p0, p1, p2, p3, p4, p5, p6); } // 0xD0837058AE2E4BEE 0x557EDA1D
 	static void _0x51BC1ED3CC44E8F7(Any p0, Any* p1, Any* p2, Any* p3, Any* p4, Any* p5, Any* p6) { invoke<Void>(0x51BC1ED3CC44E8F7, p0, p1, p2, p3, p4, p5, p6); } // 0x51BC1ED3CC44E8F7 0x91A7FCEB
 	static void _0xEF662D8D57E290B1(Any p0, Any* p1, float p2, float p3, float p4, float p5, float p6, Any* p7, Any* p8, Any* p9, Any* p10, Any* p11) { invoke<Void>(0xEF662D8D57E290B1, p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11); } // 0xEF662D8D57E290B1 0x6EAF56DE
@@ -3535,12 +3536,12 @@ namespace GRAPHICS
 	static Any SITTING_TV(Any p0) { return invoke<Any>(0xE1E258829A885245, p0); } // 0xE1E258829A885245 0x516862EB
 	static void _PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_INT(int p0) { invoke<Void>(0xC3D0841A0CC546A6, p0); } // 0xC3D0841A0CC546A6 0x716777CB
 	static void _0xD69736AAE04DB51A(float p0) { invoke<Void>(0xD69736AAE04DB51A, p0); } // 0xD69736AAE04DB51A 0x9A01FFDA
-	static void _0xC58424BA936EB458(BOOL p0) { invoke<Void>(0xC58424BA936EB458, p0); } // 0xC58424BA936EB458 0x0D4AE8CB
+	static void _PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_BOOL(BOOL p0) { invoke<Void>(0xC58424BA936EB458, p0); } // 0xC58424BA936EB458 0x0D4AE8CB
 	static void _BEGIN_TEXT_COMPONENT(char* componentType) { invoke<Void>(0x80338406F3475E55, componentType); } // 0x80338406F3475E55 0x3AC9CB55
 	static void _END_TEXT_COMPONENT() { invoke<Void>(0x362E2D3FE93A9959); } // 0x362E2D3FE93A9959 0x386CE0B8
 	static void _0xAE4E8157D9ECF087() { invoke<Void>(0xAE4E8157D9ECF087); } // 0xAE4E8157D9ECF087 0x2E80DB52
-	static void _0xBA7148484BD90365(Any* p0) { invoke<Void>(0xBA7148484BD90365, p0); } // 0xBA7148484BD90365 0x4DAAD55B
-	static void _0xE83A3E3557A56640(Any* p0) { invoke<Void>(0xE83A3E3557A56640, p0); } // 0xE83A3E3557A56640 0xCCBF0334
+	static void _PUSH_SCALEFORM_MOVIE_FUNCTION_PARAMETER_STRING(char* p0) { invoke<Void>(0xBA7148484BD90365, p0); } // 0xBA7148484BD90365 0x4DAAD55B
+	static void _0xE83A3E3557A56640(char* p0) { invoke<Void>(0xE83A3E3557A56640, p0); } // 0xE83A3E3557A56640 0xCCBF0334
 	static Any _0x5E657EF1099EDD65(Any p0) { return invoke<Any>(0x5E657EF1099EDD65, p0); } // 0x5E657EF1099EDD65 0x91A081A1
 	static void _0xEC52C631A1831C03(Any p0) { invoke<Void>(0xEC52C631A1831C03, p0); } // 0xEC52C631A1831C03 0x83A9811D
 	static void _0x9304881D6F6537EA(Any p0) { invoke<Void>(0x9304881D6F6537EA, p0); } // 0x9304881D6F6537EA 0x7AF85862
@@ -3886,7 +3887,7 @@ namespace CONTROLS
 	static BOOL _0x13337B38DB572509(Any p0) { return invoke<BOOL>(0x13337B38DB572509, p0); } // 0x13337B38DB572509
 	static BOOL _0x23F09EADC01449D6(Any p0) { return invoke<BOOL>(0x23F09EADC01449D6, p0); } // 0x23F09EADC01449D6
 	static Any _0x6CD79468A1E595C6(Any p0) { return invoke<Any>(0x6CD79468A1E595C6, p0); } // 0x6CD79468A1E595C6
-	static Any _0x0499D7B09FC9B407(Any p0, Any p1, BOOL p2) { return invoke<Any>(0x0499D7B09FC9B407, p0, p1, p2); } // 0x0499D7B09FC9B407 0x3551727A
+	static char* _0x0499D7B09FC9B407(Any p0, Any p1, BOOL p2) { return invoke <char*>(0x0499D7B09FC9B407, p0, p1, p2); } // 0x0499D7B09FC9B407 0x3551727A
 	static Any _0x80C2FD58D720C801(Any p0, Any p1, BOOL p2) { return invoke<Any>(0x80C2FD58D720C801, p0, p1, p2); } // 0x80C2FD58D720C801 0x3EE71F6A
 	static void _0x8290252FFF36ACB5(Any p0, Any p1, Any p2, Any p3) { invoke<Void>(0x8290252FFF36ACB5, p0, p1, p2, p3); } // 0x8290252FFF36ACB5
 	static void _0xCB0360EFEFB2580D(Any p0) { invoke<Void>(0xCB0360EFEFB2580D, p0); } // 0xCB0360EFEFB2580D
