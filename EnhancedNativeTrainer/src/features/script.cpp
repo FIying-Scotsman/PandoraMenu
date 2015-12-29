@@ -20,10 +20,8 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 
 #pragma comment(lib, "Shlwapi.lib")
 
-<<<<<<< HEAD
-=======
 //#include "../OnlineBypass.h"
->>>>>>> origin/master
+
 #include "script.h"
 #include "../version.h"
 
@@ -870,13 +868,9 @@ void ScriptMain()
 		write_text_to_log_file("Reading config...");
 		read_config_file();
 		write_text_to_log_file("Config read complete");
-<<<<<<< HEAD
-	
-=======
 
 		//BYPASS_ONLINE(); //allows cars to spawn online
 		
->>>>>>> origin/master
 		main();
 
 		write_text_to_log_file("ScriptMain ended");

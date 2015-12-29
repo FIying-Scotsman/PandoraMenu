@@ -13,7 +13,7 @@ https://github.com/gtav-ent/GTAV-EnhancedNativeTrainer
 
 void draw_instructional_buttons() 
 {
-	set_status_text("~r~ Calling buttons");
+	//set_status_text("~r~ Calling buttons");
 
 	int scaleForm = GRAPHICS::REQUEST_SCALEFORM_MOVIE("instructional_buttons");
 
