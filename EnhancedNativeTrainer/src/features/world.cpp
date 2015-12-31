@@ -46,8 +46,8 @@ std::string lastWeatherName;
 static bool configEnableDefault = true;
 static bool configVehicleTracks = true;
 static bool configPedTracks = true;
-static bool configVehicleTrackDepth = false;
-static bool configPedTrackDepth = false;
+static bool configVehicleTrackDepth = true; //false
+static bool configPedTrackDepth = true; //false
 
 
 // Find Pattern
@@ -81,7 +81,7 @@ intptr_t FindPattern(const char* bMask, const char* sMask) //finds snow pattern 
 }
 
 // Tracks
-void EnableTracks(bool tracksVehicle = true, bool tracksPeds = false, bool deepTracksVehicle = false, bool deepTracksPed = false)
+void EnableTracks(bool tracksVehicle = true, bool tracksPeds = true, bool deepTracksVehicle = true, bool deepTracksPed = true)
 {
 	static auto VAR_FeetSnowTracks_call = FindPattern("\x80\x3D\x00\x00\x00\x00\x00\x48\x8B\xD9\x74\x37", "xx?????xxxxx");
 	if (!VAR_FeetSnowTracks_call)

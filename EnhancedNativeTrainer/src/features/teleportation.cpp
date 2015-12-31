@@ -562,6 +562,10 @@ bool onconfirm_teleport_location(MenuItem<int> choice)
 
 bool process_teleport_menu(int categoryIndex)
 {
+	//preloading particle effects
+	STREAMING::REQUEST_NAMED_PTFX_ASSET("scr_rcbarry1");//scr_rcbarry2
+	GRAPHICS::_SET_PTFX_ASSET_NEXT_CALL("scr_rcbarry1");//scr_rcbarry2
+
 	if (categoryIndex == -1)
 	{
 		std::vector<MenuItem<int>*> menuItems;

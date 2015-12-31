@@ -530,6 +530,10 @@ bool onconfirm_skinchanger_menu(MenuItem<int> choice)
 	std::ostringstream ss;
 	int index = PED::GET_PED_PROP_INDEX(playerPed, 0);
 
+	//Particle pre-loading
+	STREAMING::REQUEST_NAMED_PTFX_ASSET("scr_rcbarry2");
+	GRAPHICS::_SET_PTFX_ASSET_NEXT_CALL("scr_rcbarry2");
+
 	switch (choice.value)
 	{
 	case 0:
