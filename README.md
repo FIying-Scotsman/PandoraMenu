@@ -4,7 +4,7 @@
 
 A previously updated ENT fork which is now available just for code examples. 
 
-I've since moved onto the official ENT repo, and with the help of others - release updates available here: 
+I've since moved onto the official ENT repo, and with the help of other team members - release updates available here: 
 
 https://www.gta5-mods.com/scripts/enhanced-native-trainer-zemanez-and-others
 
