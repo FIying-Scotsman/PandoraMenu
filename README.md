@@ -2,7 +2,12 @@
 
 ### A GTA V PC Private menu based on the work of the ENT team, and ENT update 24. 
 
-After recent events regarding ENT being used malicously by other groups, and the uncertain future of ENT, I've started developing this fork of ENT in private - adding features I would add to the main fork of ENT where possible and keeping the ENT project alive. 
+A previously updated ENT fork which is now available just for code examples. 
 
-This fork forms the basis of my private menu, called Pandora after Pandora's Box (different names are welcome). 
+I've since moved onto the official ENT repo, and with the help of others - release updates available here: 
+
+https://www.gta5-mods.com/scripts/enhanced-native-trainer-zemanez-and-others
+
+The updated ENT source is still private (due to it being a fork of a private repo - I can't change that easily) but interested parties can contact me directly for an invite.
+
 
