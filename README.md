@@ -2,7 +2,7 @@
 
 ### A GTA V PC Private menu based on the work of the ENT team, and ENT update 24. 
 
-A previously updated ENT fork which is now available just for code examples. 
+A previously updated ENT (Enhanced Native Trainer) fork which is now available just for code examples. 
 
 I've since moved onto the official ENT repo, and with the help of other team members - release updates available here: 
 
